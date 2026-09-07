@@ -7,6 +7,7 @@ from .embeddings import embed_texts
 from .ingestion.edoeb import EDOEB_ADSG_URL, EDOEB_VERFUEGUNGEN_URL, ingest_decisions
 from .ingestion.fedlex import ingest_statute
 from .rag import vector_store
+from .rag.chat import ask as ask_question
 
 
 @click.group()
@@ -75,6 +76,20 @@ def query_cmd(question: str, top_k: int):
         click.echo(f"\n[{m['law_version']}] {label}  (distance={h['distance']:.3f})")
         click.echo(f"  {h['text'][:300].replace(chr(10), ' ')}")
         click.echo(f"  -> {m['source_url']}")
+
+
+@cli.command("ask")
+@click.argument("question")
+@click.option("--top-k", default=5, type=int)
+def ask_cmd(question: str, top_k: int):
+    """Retrieval + cited answer generation (see rag/chat.py for the
+    provider used - GLM by default, see .env)."""
+    result = ask_question(question, top_k=top_k)
+    click.echo(f"\n{result.answer}\n")
+    click.echo(f"(Modell: {result.model_used})")
+    click.echo("Quellen:")
+    for s in result.sources:
+        click.echo(f"  - [{s.law_version}] {s.label} (distance={s.distance:.3f}) -> {s.source_url}")
 
 
 if __name__ == "__main__":
