@@ -1,0 +1,29 @@
+[project]
+name = "dsg-compliance"
+version = "0.1.0"
+description = "RAG-grounded assistant for Swiss DSG (Datenschutzgesetz) compliance questions, citing the statute, ordinance, and FDPIC (EDOEB) guidance/decisions"
+requires-python = ">=3.11"
+dependencies = [
+    "httpx>=0.27",
+    "pydantic>=2.6",
+    "pydantic-settings>=2.2",
+    "python-dotenv>=1.0",
+    "anthropic>=0.140",
+    "chromadb>=0.5",
+    "sentence-transformers>=3.0",
+    "beautifulsoup4>=4.12",
+    "lxml>=5.2",
+    "pypdf>=4.2",
+    "click>=8.1",
+    "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "pytest-mock"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,0 +1,71 @@
+# Ingestion sources for DSG Compliance.
+#
+# Every URL here was verified by web search on 2026-09-07 before being added -
+# do not add a source URL without checking it resolves to real content first.
+# This list is a starting point, not exhaustive - expanding it (especially the
+# EDOEB recommendations/case-example archive) is one of the first real tasks.
+
+statute:
+  - id: dsg
+    title: "Bundesgesetz über den Datenschutz (DSG), SR 235.1"
+    description: >
+      The revised Federal Act on Data Protection, in force since 1 September
+      2023. This is the primary law text.
+    url_de: "https://www.fedlex.admin.ch/eli/cc/2022/491/de"
+    url_fr: "https://www.fedlex.admin.ch/eli/cc/2022/491/fr"
+    url_it: "https://www.fedlex.admin.ch/eli/cc/2022/491/it"
+
+  - id: dsv
+    title: "Verordnung über den Datenschutz (DSV), SR 235.11"
+    description: >
+      The implementing ordinance to the DSG (31 August 2022), fleshing out
+      obligations like the register of processing activities, data security
+      requirements, and breach notification.
+    url_de: "https://www.fedlex.admin.ch/eli/cc/2022/568/de"
+
+guidance:
+  - id: edoeb-supervision
+    title: "EDÖB – Aufsicht"
+    description: >
+      FDPIC's supervision activity page - index of ongoing/closed
+      investigations and enforcement actions under the current DSG.
+    url_de: "https://www.edoeb.admin.ch/de/aufsicht"
+
+  - id: edoeb-recommendations-adsg
+    title: "EDÖB – Schlussberichte und Empfehlungen (aDSG, bis 31.08.2023)"
+    description: >
+      Archive of final reports and recommendations issued under the OLD
+      (pre-revision) DSG. Historical, but still useful for precedent on how
+      the FDPIC reasons about specific data-handling scenarios.
+    url_de: "https://www.edoeb.admin.ch/de/schlussberichte-empfehlungen-bis-31082023"
+
+  - id: edoeb-leitfaden-neues-dsg
+    title: "EDÖB – Leitfaden: Das neue Datenschutzgesetz aus Sicht des EDÖB"
+    description: "FDPIC's own guide to the revised DSG."
+    url_de: "https://www.edoeb.admin.ch/dam/de/sd-web/uZlw439wGOR9/Leitfaden%20Das%20neue%20Datenschutzgesetz%20aus%20Sicht%20des%20ED%C3%96B_20221009.pdf"
+    format: pdf
+
+  - id: edoeb-leitfaden-tom
+    title: "EDÖB – Leitfaden zu den technischen und organisatorischen Massnahmen (TOM)"
+    description: >
+      Guidance on the technical/organizational measures (Art. 8 DSG) a
+      controller must implement - directly relevant to a researcher's own
+      data-handling setup.
+    url_de: "https://www.edoeb.admin.ch/de/dam/edoeb/de/Dokumente/datenschutz/leitfaden_tom.pdf.download.pdf/TOM_DE.pdf"
+    format: pdf
+
+  - id: edoeb-auslanduebermittlung
+    title: "EDÖB – Anleitung für die Prüfung der Zulässigkeit von Datenübermittlungen mit Auslandbezug"
+    description: >
+      Guidance specifically on cross-border data transfers - relevant for
+      research collaborations involving data leaving Switzerland.
+    url_de: "https://www.edoeb.admin.ch/dam/de/sd-web/Y-cdGL-4RD0i/Anleitung%20f%C3%BCr%20die%20Pr%C3%BCfung%20der%20Zul%C3%A4ssigkeit%20von%20Daten%C3%BCbermittlungen%20mit%20Auslandbezug_DE.pdf"
+    format: pdf
+
+# Not yet sourced (real gaps to fill before this is useful for researchers):
+# - A live, current (post-01.09.2023) FDPIC recommendations/case-example feed
+#   (the archive above stops at 31.08.2023 - need to find its successor page
+#   or an RSS/Mitteilungen feed).
+# - Cantonal research-ethics-committee guidance where it overlaps with DSG
+#   (e.g. swissethics), if in scope.
+# - EU GDPR adequacy decision text, if cross-border EU comparisons are wanted.
