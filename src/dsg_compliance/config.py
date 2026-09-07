@@ -8,7 +8,10 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 class Settings(BaseSettings):
     anthropic_api_key: str | None = None  # not used yet - swap in once Anthropic credit is available
     chroma_persist_dir: str = str(PROJECT_ROOT / "data" / "chroma")
-    embedding_model: str = "paraphrase-multilingual-mpnet-base-v2"  # free, local, strong German support
+    # Hosted (not local) so the Render free-tier instance (512MB RAM) never
+    # has to load a torch model - a local sentence-transformers model was
+    # tried first and reliably OOM-killed the process on every /ask request.
+    embedding_model: str = "gemini-embedding-001"
 
     # Chat/answer-generation layer: GLM (z.ai), free tier - chosen over Gemini
     # because Gemini's shared daily quota was already exhausted by other

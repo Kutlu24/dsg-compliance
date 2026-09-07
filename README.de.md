@@ -20,25 +20,29 @@ Es gibt Schweizer „Private AI"-Hosting-Angebote (Chatbot auf Schweizer Boden, 
 
 ```
 fedlex.admin.ch (DSG/DSV) ─┐
-edoeb.admin.ch (Wegleitungen) ─┼─> Ingestion (Abruf + Parsing) ─> Chunking ─> Embeddings (lokal) ─> Chroma
+edoeb.admin.ch (Wegleitungen) ─┼─> Ingestion (Abruf + Parsing) ─> Chunking ─> Embeddings (Gemini-API) ─> Chroma
                             ┘                                                            │
                                                                        Anfrage ─> Retrieval ┘─> LLM (GLM) ─> zitierte Antwort
 ```
 
 ## Technik
 
-Python, [Chroma](https://www.trychroma.com/) als Vektordatenbank, lokale, kostenlose `sentence-transformers`-Embeddings (kein API-Schlüssel nötig), GLM (z.ai, kostenlose Stufe) für die zitierte Antwortgenerierung — umschaltbar auf Gemini/Anthropic über `CHAT_PROVIDER`, `httpx` + `beautifulsoup4`/`lxml` zum Scrapen der Fedlex-HTML-Seiten, `pypdf` für die PDFs (Gesetzestext und EDÖB-Wegleitungen).
+Python, [Chroma](https://www.trychroma.com/) als Vektordatenbank, Gemini's kostenlose Embedding-API (`gemini-embedding-001`) für das Retrieval, GLM (z.ai, kostenlose Stufe) für die zitierte Antwortgenerierung — umschaltbar auf Gemini/Anthropic über `CHAT_PROVIDER`, `httpx` + `beautifulsoup4`/`lxml` zum Scrapen der Fedlex-HTML-Seiten, `pypdf` für die PDFs (Gesetzestext und EDÖB-Wegleitungen).
+
+Die Embeddings wurden von einem lokalen `sentence-transformers`-Modell auf die gehostete Gemini-API umgestellt, nachdem das lokale Modell (768-dim, aber ~1,1GB mit torch) auf Renders kostenlosem 512MB-RAM-Plan bei jeder `/ask`-Anfrage den Prozess zuverlässig per OOM abgeschossen hat. `GEMINI_API_KEY` ist daher immer erforderlich, unabhängig von `CHAT_PROVIDER`.
 
 ## Ausführen
 
 ```bash
 pip install -e .
-python -m dsg_compliance.cli ingest          # alles abrufen + chunken + embedden (~15 Min., lokal)
+python -m dsg_compliance.cli ingest          # alles abrufen + chunken + embedden via Gemini-API
 python -m dsg_compliance.cli ask "Wie lange darf ich fuer die Beantwortung eines Auskunftsgesuchs brauchen?"
 ```
 
 `ask` sucht die relevantesten Artikel/Entscheide und lässt ein LLM eine zitierte Antwort schreiben (nie ohne die zugehörige Quellenliste — siehe `rag/chat.py`). `query` macht nur das Retrieval, ohne LLM, nützlich um den Index selbst zu prüfen.
 
+Auf Render läuft `ingest` als Teil von `buildCommand` (siehe `render.yaml`), statt ins Repo committet zu werden — der Vektorspeicher wird so bei jedem Deploy frisch aufgebaut, und ein Schlaf-/Aufwach-Zyklus der kostenlosen Stufe löst ihn nie erneut aus.
+
 ## Status
 
-Funktioniert Ende-zu-Ende: Ingestion (79 DSG- + 47 DSV-Artikel, 4 aktuelle + 71 aDSG-EDÖB-Entscheide, 3138 Chunks), lokales Embedding + Chroma-Speicherung, und eine zitierte Chat-Antwortebene (standardmässig GLM — kostenlose Stufe, siehe `config.py` für den Grund; umschaltbar auf Gemini oder Anthropic über `CHAT_PROVIDER`, sobald verfügbar).
+Funktioniert Ende-zu-Ende: Ingestion (79 DSG- + 47 DSV-Artikel, 4 aktuelle + 71 aDSG-EDÖB-Entscheide, 3138 Chunks), Gemini-API-Embedding + Chroma-Speicherung, und eine zitierte Chat-Antwortebene (standardmässig GLM — kostenlose Stufe, siehe `config.py` für den Grund; umschaltbar auf Gemini oder Anthropic über `CHAT_PROVIDER`, sobald verfügbar).

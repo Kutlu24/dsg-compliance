@@ -107,7 +107,7 @@ _CALLERS = {"glm": _call_glm, "gemini": _call_gemini, "anthropic": _call_anthrop
 
 
 def ask(question: str, top_k: int = 5, where: dict | None = None) -> AnswerWithSources:
-    [query_vector] = embed_texts([question])
+    [query_vector] = embed_texts([question], task_type="RETRIEVAL_QUERY")
     hits = vector_store.query(query_vector, top_k=top_k, where=where)
     if not hits:
         return AnswerWithSources(

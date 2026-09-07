@@ -51,8 +51,8 @@ def ingest(statutes: bool, decisions: bool):
         click.echo(f"  {len(adsg)} decisions")
         all_chunks += chunk_decisions(current + adsg)
 
-    click.echo(f"\n{len(all_chunks)} chunks total. Embedding (local model, first run downloads the model)...")
-    vectors = embed_texts([c.text for c in all_chunks])
+    click.echo(f"\n{len(all_chunks)} chunks total. Embedding via Gemini API...")
+    vectors = embed_texts([c.text for c in all_chunks], task_type="RETRIEVAL_DOCUMENT")
     vector_store.upsert_chunks(all_chunks, vectors)
     click.echo(f"Stored. Collection now has {vector_store.count()} chunks.")
 
@@ -64,7 +64,7 @@ def query_cmd(question: str, top_k: int):
     """Retrieval-only smoke test - no LLM yet, just shows what would be
     retrieved for a question, to sanity-check the index before building
     the chat layer on top of it."""
-    [vector] = embed_texts([question])
+    [vector] = embed_texts([question], task_type="RETRIEVAL_QUERY")
     hits = vector_store.query(vector, top_k=top_k)
     for h in hits:
         m = h["metadata"]

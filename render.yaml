@@ -3,12 +3,17 @@ services:
     name: dsg-compliance
     runtime: python
     plan: free
-    buildCommand: pip install -e .
+    # Ingest runs at build time (once per deploy), not at startup, so a
+    # free-tier sleep/wake cycle never re-fetches and re-embeds the corpus -
+    # it just restarts uvicorn against the vector store the build produced.
+    buildCommand: pip install -e . && python -m dsg_compliance.cli ingest
     startCommand: uvicorn dsg_compliance.api.app:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: CHAT_PROVIDER
         value: glm
       - key: GLM_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
         sync: false
       # CHROMA_PERSIST_DIR is left at its default (config.py resolves it
       # relative to the installed package's own location, which is correct

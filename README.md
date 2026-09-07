@@ -20,25 +20,29 @@ There are Swiss "private AI" hosting services (run your chatbot on Swiss soil, D
 
 ```
 fedlex.admin.ch (DSG/DSV) ─┐
-edoeb.admin.ch (guidance)  ─┼─> ingestion (fetch + parse) ─> chunking ─> embeddings (local) ─> Chroma
+edoeb.admin.ch (guidance)  ─┼─> ingestion (fetch + parse) ─> chunking ─> embeddings (Gemini API) ─> Chroma
                             ┘                                                            │
                                                                        query ─> retrieval ┘─> LLM (GLM) ─> cited answer
 ```
 
 ## Tech stack
 
-Python, [Chroma](https://www.trychroma.com/) for the vector store, local free `sentence-transformers` embeddings (no API key needed), GLM (z.ai, free tier) for cited-answer generation — swappable to Gemini/Anthropic via `CHAT_PROVIDER`, `httpx` + `beautifulsoup4`/`lxml` for scraping Fedlex HTML, `pypdf` for the PDFs (statute text and FDPIC guidance).
+Python, [Chroma](https://www.trychroma.com/) for the vector store, Gemini's free-tier embedding API (`gemini-embedding-001`) for retrieval, GLM (z.ai, free tier) for cited-answer generation — swappable to Gemini/Anthropic via `CHAT_PROVIDER`, `httpx` + `beautifulsoup4`/`lxml` for scraping Fedlex HTML, `pypdf` for the PDFs (statute text and FDPIC guidance).
+
+Embeddings moved from a local `sentence-transformers` model to the hosted Gemini API after the local model (768-dim, but ~1.1GB with torch) reliably OOM-killed the process on Render's free 512MB-RAM plan on every `/ask` request. `GEMINI_API_KEY` is therefore always required, independent of `CHAT_PROVIDER`.
 
 ## Running it
 
 ```bash
 pip install -e .
-python -m dsg_compliance.cli ingest          # fetch + chunk + embed everything (~15 min, local CPU)
+python -m dsg_compliance.cli ingest          # fetch + chunk + embed everything via the Gemini API
 python -m dsg_compliance.cli ask "Wie lange darf ich fuer die Beantwortung eines Auskunftsgesuchs brauchen?"
 ```
 
 `ask` retrieves the most relevant statute articles/decisions and has an LLM write a cited answer (never presented without its source list - see `rag/chat.py`). `query` does retrieval only, no LLM, useful for sanity-checking the index itself.
 
+On Render, `ingest` runs as part of `buildCommand` (see `render.yaml`) rather than being committed to the repo, so the vector store is rebuilt fresh on every deploy and a free-tier sleep/wake cycle never re-triggers it.
+
 ## Status
 
-Working end to end: ingestion (79 DSG + 47 DSV articles, 4 current + 71 aDSG EDOEB decisions, 3138 chunks), local embedding + Chroma storage, and a cited-answer chat layer (GLM by default - free tier, see `config.py` for why; swap to Gemini or Anthropic via `CHAT_PROVIDER` once available).
+Working end to end: ingestion (79 DSG + 47 DSV articles, 4 current + 71 aDSG EDOEB decisions, 3138 chunks), Gemini-API embedding + Chroma storage, and a cited-answer chat layer (GLM by default - free tier, see `config.py` for why; swap to Gemini or Anthropic via `CHAT_PROVIDER` once available).

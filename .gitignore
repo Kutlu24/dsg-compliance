@@ -4,7 +4,8 @@ __pycache__/
 .pytest_cache/
 data/raw/
 *.egg-info/
-# data/chroma/ is intentionally committed (~63MB) - it's the pre-built
-# vector store, so Render's deploy doesn't need to run the ~15min ingest
-# on every build. Regenerate locally with `dsg_compliance.cli ingest`
-# and recommit if the source content changes.
+# data/chroma/ is no longer committed: it now holds Gemini-embedding
+# vectors (see embeddings.py) rebuilt automatically by Render's
+# buildCommand on every deploy (see render.yaml), so a committed copy
+# would just go stale and risk an embedding-dimension mismatch.
+data/chroma/
