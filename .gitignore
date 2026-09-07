@@ -3,5 +3,8 @@ __pycache__/
 *.pyc
 .pytest_cache/
 data/raw/
-data/chroma/
 *.egg-info/
+# data/chroma/ is intentionally committed (~63MB) - it's the pre-built
+# vector store, so Render's deploy doesn't need to run the ~15min ingest
+# on every build. Regenerate locally with `dsg_compliance.cli ingest`
+# and recommit if the source content changes.

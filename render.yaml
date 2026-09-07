@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: dsg-compliance
+    runtime: python
+    plan: free
+    buildCommand: pip install -e .
+    startCommand: uvicorn dsg_compliance.api.app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: CHAT_PROVIDER
+        value: glm
+      - key: GLM_API_KEY
+        sync: false
+      # CHROMA_PERSIST_DIR is left at its default (config.py resolves it
+      # relative to the installed package's own location, which is correct
+      # both locally and on Render - no override needed).
+      - key: PYTHON_VERSION
+        value: 3.12.6
