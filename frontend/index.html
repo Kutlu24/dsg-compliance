@@ -46,7 +46,9 @@
   .timeline-row .bar-seg.old { background: var(--old); }
   .timeline-legend { display: flex; gap: 14px; font-size: 0.7rem; color: var(--text2); margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
   .timeline-legend .sw { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
-  .prec-row { margin-bottom: 12px; }
+  .prec-row { display: block; margin-bottom: 12px; text-decoration: none; border-radius: 6px; padding: 4px 6px; margin: -4px -6px 8px; transition: background .12s; }
+  .prec-row:hover { background: var(--bg); }
+  .prec-row:hover .prec-name span:first-child { color: var(--accent-dark); text-decoration: underline; }
   .prec-row .prec-name { font-family: var(--font-mono, monospace); font-size: 0.72rem; color: var(--text); font-weight: 600; display: flex; justify-content: space-between; margin-bottom: 4px; }
   .prec-row .prec-count { color: var(--accent-dark); font-weight: 700; }
   .prec-row .prec-bar-track { background: var(--bg); border-radius: 4px; height: 7px; overflow: hidden; }
@@ -284,6 +286,15 @@ function renderTimeline() {
   }).join("");
 }
 
+function bgeLink(citation) {
+  // "BGE 136 II 508" -> official Federal Supreme Court case-law viewer.
+  // Verified live (2026-09) across old (BGE 95, 1969) and recent (BGE 142,
+  // 2016) volumes - this is bger.ch's own redirect service, not a guess.
+  const m = citation.match(/^BGE\s+(\d+)\s+([IVX]+)\s+(\d+)$/);
+  if (!m) return null;
+  return `http://relevancy.bger.ch/cgi-bin/JumpCGI?id=BGE-${m[1]}-${m[2]}-${m[3]}`;
+}
+
 function renderPrecedents() {
   const body = document.getElementById("precedentsBody");
   if (!citationGraph) { body.innerHTML = `<p class="empty">${STRINGS[lang].loading}</p>`; return; }
@@ -291,10 +302,10 @@ function renderPrecedents() {
   if (!entries.length) { body.innerHTML = `<p class="empty">-</p>`; return; }
   const maxN = entries[0][1];
   body.innerHTML = entries.map(([name, n]) => `
-    <div class="prec-row" title="${STRINGS[lang].precedentCitedBy(n)}">
+    <a class="prec-row" href="${bgeLink(name)}" target="_blank" rel="noopener" title="${STRINGS[lang].precedentCitedBy(n)}">
       <div class="prec-name"><span>${name}</span><span class="prec-count">${n}</span></div>
       <div class="prec-bar-track"><div class="prec-bar-fill" style="width:${(n / maxN) * 100}%"></div></div>
-    </div>`).join("");
+    </a>`).join("");
 }
 
 async function loadCitationGraph() {
