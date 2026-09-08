@@ -38,6 +38,9 @@ class SourceRef(BaseModel):
     law_version: str
     source_url: str
     distance: float
+    excerpt: str  # the actual retrieved chunk text - shown collapsed in the UI so a
+    # user can see the specific passage a claim came from without opening the
+    # (often long) source document (feedback: "arrive at the specific point")
 
 
 class AnswerWithSources(BaseModel):
@@ -152,6 +155,7 @@ def ask(question: str, top_k: int = 5, where: dict | None = None, lang: str = "d
             law_version=h["metadata"]["law_version"],
             source_url=h["metadata"]["source_url"],
             distance=h["distance"],
+            excerpt=h["text"],
         )
         for h in hits
     ]

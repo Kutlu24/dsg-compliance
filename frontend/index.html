@@ -107,8 +107,16 @@
   @media (prefers-reduced-motion: reduce) { .answer-card { animation: none; } }
   .answer-text { white-space: pre-wrap; font-size: 0.97rem; margin-bottom: 22px; }
   .sources h3 { font-family: var(--font-display); font-weight: 600; font-size: 1rem; color: var(--text); margin-bottom: 12px; }
-  .source-item { display: flex; align-items: flex-start; gap: 10px; padding: 12px 0; border-top: 1px solid var(--border); font-size: 0.86rem; }
+  .source-item { padding: 12px 0; border-top: 1px solid var(--border); font-size: 0.86rem; }
   .source-item:first-child { border-top: none; padding-top: 0; }
+  .source-item-head { display: flex; align-items: flex-start; gap: 10px; }
+  .source-excerpt { margin-top: 8px; }
+  .source-excerpt summary { cursor: pointer; font-size: 0.78rem; color: var(--text2); font-weight: 600; list-style: none; display: inline-flex; align-items: center; gap: 4px; }
+  .source-excerpt summary::-webkit-details-marker { display: none; }
+  .source-excerpt summary::before { content: "▸"; font-size: 0.7rem; transition: transform .12s; }
+  .source-excerpt[open] summary::before { transform: rotate(90deg); }
+  .source-excerpt summary:hover { color: var(--accent); }
+  .excerpt-text { margin-top: 8px; padding: 12px 14px; background: var(--bg); border-left: 2px solid var(--border); border-radius: 6px; font-size: 0.82rem; color: var(--text); white-space: pre-wrap; max-height: 260px; overflow-y: auto; }
   .badge { flex-shrink: 0; font-size: 0.66rem; font-weight: 700; padding: 3px 9px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 1px; }
   .badge-current { background: var(--ok-soft); color: var(--ok); }
   .badge-old { background: var(--old-soft); color: var(--old); }
@@ -186,6 +194,7 @@ const STRINGS = {
     ask: "Fragen",
     asking: "Wird beantwortet...",
     sources: "Quellen",
+    showExcerpt: "Textstelle anzeigen",
     disclaimer: "Dies ist eine Informationshilfe, keine Rechtsberatung. Für eine verbindliche Einschätzung konsultieren Sie eine Anwältin/einen Anwalt oder direkt den EDÖB.",
     model: "Aktives KI-Modell",
     current: "aktuell",
@@ -208,6 +217,7 @@ const STRINGS = {
     ask: "Ask",
     asking: "Thinking...",
     sources: "Sources",
+    showExcerpt: "Show excerpt",
     disclaimer: "This is an informational aid, not legal advice. For a binding assessment, consult a lawyer or the FDPIC directly.",
     model: "Active AI model",
     current: "current",
@@ -364,10 +374,17 @@ async function ask() {
     }
     const data = await res.json();
     statusEl.textContent = "";
+    const esc = (str) => str.replace(/</g, "&lt;");
     const sourcesHtml = data.sources.map(src => `
       <div class="source-item">
-        ${sourceBadge(src.law_version)}
-        <a href="${src.source_url}" target="_blank" rel="noopener">${src.label}</a>
+        <div class="source-item-head">
+          ${sourceBadge(src.law_version)}
+          <a href="${src.source_url}" target="_blank" rel="noopener">${src.label}</a>
+        </div>
+        <details class="source-excerpt">
+          <summary>${s.showExcerpt}</summary>
+          <div class="excerpt-text">${esc(src.excerpt)}</div>
+        </details>
       </div>`).join("");
     document.getElementById("result").innerHTML = `
       <div class="answer-card">
