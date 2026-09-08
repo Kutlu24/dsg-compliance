@@ -46,6 +46,8 @@
   .timeline-row .bar-seg.old { background: var(--old); }
   .timeline-legend { display: flex; gap: 14px; font-size: 0.7rem; color: var(--text2); margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
   .timeline-legend .sw { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+  .full-report-link { display: block; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 0.76rem; font-weight: 600; color: var(--accent); text-decoration: none; }
+  .full-report-link:hover { color: var(--accent-dark); text-decoration: underline; }
   .prec-row { display: block; margin-bottom: 12px; text-decoration: none; border-radius: 6px; padding: 4px 6px; margin: -4px -6px 8px; transition: background .12s; }
   .prec-row:hover { background: var(--bg); }
   .prec-row:hover .prec-name span:first-child { color: var(--accent-dark); text-decoration: underline; }
@@ -140,6 +142,7 @@
     <span><span class="sw" style="background:var(--ok)"></span><span id="legendCurrent"></span></span>
     <span><span class="sw" style="background:var(--old)"></span><span id="legendOld"></span></span>
   </div>
+  <a id="fullReportLink" class="full-report-link" target="_blank" rel="noopener"></a>
 </aside>
 <div class="wrap">
   <div class="top-row">
@@ -204,6 +207,8 @@ const STRINGS = {
     timelineSub: "EDÖB-Entscheide pro Jahr",
     legendCurrent: "aktuelles Recht",
     legendOld: "altes Recht (aDSG)",
+    fullReportText: "Vollständiger Bericht →",
+    fullReportUrl: "https://claude.ai/code/artifact/ed1966bb-b0b4-4a28-b082-e65fcf8fab5d",
     precedentsTitle: "Meistzitierte Präjudizien",
     precedentsSub: "BGE-Urteile, auf die sich EDÖB-Entscheide stützen",
     precedentCitedBy: n => `zitiert von ${n} Entscheid${n === 1 ? "" : "en"}`,
@@ -227,6 +232,8 @@ const STRINGS = {
     timelineSub: "EDÖB decisions per year",
     legendCurrent: "current law",
     legendOld: "old law (aDSG)",
+    fullReportText: "Full report →",
+    fullReportUrl: "https://claude.ai/code/artifact/8a758157-ad5f-4550-8aa1-e99f7b80db3b",
     precedentsTitle: "Most-cited precedents",
     precedentsSub: "Federal Court (BGE) rulings EDÖB decisions rely on",
     precedentCitedBy: n => `cited by ${n} decision${n === 1 ? "" : "s"}`,
@@ -260,6 +267,8 @@ function setLang(l) {
   document.getElementById("timelineSub").textContent = s.timelineSub;
   document.getElementById("legendCurrent").textContent = s.legendCurrent;
   document.getElementById("legendOld").textContent = s.legendOld;
+  document.getElementById("fullReportLink").textContent = s.fullReportText;
+  document.getElementById("fullReportLink").href = s.fullReportUrl;
   document.getElementById("precedentsTitle").textContent = s.precedentsTitle;
   document.getElementById("precedentsSub").textContent = s.precedentsSub;
   renderModelBadge();
