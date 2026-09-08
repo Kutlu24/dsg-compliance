@@ -18,11 +18,21 @@ def cli():
 @cli.command("ingest")
 @click.option("--statutes/--no-statutes", default=True)
 @click.option("--decisions/--no-decisions", default=True)
-def ingest(statutes: bool, decisions: bool):
+@click.option(
+    "--max-chunks",
+    default=None,
+    type=int,
+    help="Cap total chunks sent to embed_texts, keeping all statute chunks "
+    "and truncating decision chunks first. Gemini's free-tier embed_content "
+    "quota is 1000 requests/day (per embedded text, not per API call), well "
+    "under this corpus's ~3100 chunks - use this to fit within budget.",
+)
+def ingest(statutes: bool, decisions: bool, max_chunks: int | None):
     """Fetches DSG/DSV + EDOEB decisions, chunks, embeds, and stores them
     in the local Chroma collection. Safe to re-run - upsert overwrites
     matching chunk_ids rather than duplicating."""
-    all_chunks = []
+    statute_chunks: list = []
+    decision_chunks: list = []
 
     if statutes:
         sources = yaml.safe_load((config_dir() / "sources.yaml").read_text(encoding="utf-8"))
@@ -40,7 +50,7 @@ def ingest(statutes: bool, decisions: bool):
                 display_url=law["url_de"],
             )
             click.echo(f"  {len(articles)} articles")
-            all_chunks += chunk_articles(articles)
+            statute_chunks += chunk_articles(articles)
 
     if decisions:
         click.echo("Fetching current-DSG EDOEB decisions...")
@@ -49,11 +59,35 @@ def ingest(statutes: bool, decisions: bool):
         click.echo("Fetching aDSG (pre-revision) EDOEB decisions...")
         adsg = ingest_decisions(EDOEB_ADSG_URL, with_text=True)
         click.echo(f"  {len(adsg)} decisions")
-        all_chunks += chunk_decisions(current + adsg)
+        decision_chunks = chunk_decisions(current + adsg)
 
-    click.echo(f"\n{len(all_chunks)} chunks total. Embedding via Gemini API...")
-    vectors = embed_texts([c.text for c in all_chunks], task_type="RETRIEVAL_DOCUMENT")
-    vector_store.upsert_chunks(all_chunks, vectors)
+    all_chunks = statute_chunks + decision_chunks
+    already = vector_store.existing_ids()
+    new_chunks = [c for c in all_chunks if c.chunk_id not in already]
+    click.echo(
+        f"\n{len(all_chunks)} chunks total, {len(already)} already embedded, "
+        f"{len(new_chunks)} new."
+    )
+
+    if max_chunks is not None and len(new_chunks) > max_chunks:
+        new_statute = [c for c in new_chunks if c.source_type == "statute"]
+        new_decision = [c for c in new_chunks if c.source_type != "statute"]
+        keep_decisions = max(0, max_chunks - len(new_statute))
+        new_chunks = new_statute + new_decision[:keep_decisions]
+        click.echo(
+            f"Truncated to {len(new_chunks)} new chunks ({len(new_statute)} statute + "
+            f"{len(new_chunks) - len(new_statute)} decision) to fit --max-chunks={max_chunks}. "
+            "Re-run the same command later (e.g. once the daily embedding quota resets) "
+            "to embed the rest - already-embedded chunks are skipped automatically."
+        )
+
+    if not new_chunks:
+        click.echo("Nothing new to embed.")
+        return
+
+    click.echo(f"Embedding {len(new_chunks)} chunks via Gemini API...")
+    vectors = embed_texts([c.text for c in new_chunks], task_type="RETRIEVAL_DOCUMENT")
+    vector_store.upsert_chunks(new_chunks, vectors)
     click.echo(f"Stored. Collection now has {vector_store.count()} chunks.")
 
 

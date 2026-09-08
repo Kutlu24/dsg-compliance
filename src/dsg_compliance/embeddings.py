@@ -17,8 +17,12 @@ import time
 
 from .config import settings
 
-_BATCH_SIZE = 100  # keep well under the API's per-request batch limit
-_RETRY_DELAYS = (2.0, 5.0, 15.0)  # backoff on transient/rate-limit errors
+_BATCH_SIZE = 40  # the free tier enforces a per-request TOKEN limit, not just a
+# request-count one: a batch of 100 real chunks (~1200 chars each) was
+# rejected instantly (429, no processing delay) while 50 succeeded - 40
+# leaves margin since chunk length varies.
+_PACING_SECONDS = 2.0  # stay well under the free tier's per-minute request cap
+_RETRY_DELAYS = (10.0, 30.0, 60.0, 60.0)  # backoff on transient/rate-limit errors
 
 
 def _client():
@@ -38,6 +42,8 @@ def embed_texts(texts: list[str], task_type: str = "RETRIEVAL_DOCUMENT") -> list
     vectors: list[list[float]] = []
 
     for start in range(0, len(texts), _BATCH_SIZE):
+        if start:
+            time.sleep(_PACING_SECONDS)
         batch = texts[start : start + _BATCH_SIZE]
         last_error: Exception | None = None
         for attempt, delay in enumerate((0.0, *_RETRY_DELAYS)):

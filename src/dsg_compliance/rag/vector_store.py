@@ -72,3 +72,7 @@ def query(query_vector: list[float], top_k: int = 5, where: dict | None = None) 
 
 def count() -> int:
     return _collection().count()
+
+
+def existing_ids() -> set[str]:
+    return set(_collection().get(include=[])["ids"])

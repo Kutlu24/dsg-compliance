@@ -3,10 +3,14 @@ services:
     name: dsg-compliance
     runtime: python
     plan: free
-    # Ingest runs at build time (once per deploy), not at startup, so a
-    # free-tier sleep/wake cycle never re-fetches and re-embeds the corpus -
-    # it just restarts uvicorn against the vector store the build produced.
-    buildCommand: pip install -e . && python -m dsg_compliance.cli ingest
+    # Ingest is NOT run at build/deploy time: Gemini's free-tier
+    # embed_content quota is 1000 requests/day (counted per embedded text),
+    # which a from-scratch ingest of this corpus (~3100 chunks) can't fit
+    # in one day, and re-running it on every deploy would burn the day's
+    # budget for no reason. data/chroma/ is committed instead - regenerate
+    # locally with `dsg_compliance.cli ingest --max-chunks N` and recommit
+    # if the source content changes.
+    buildCommand: pip install -e .
     startCommand: uvicorn dsg_compliance.api.app:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: CHAT_PROVIDER
