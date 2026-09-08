@@ -48,6 +48,9 @@
   .timeline-legend .sw { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
   .full-report-link { display: block; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 0.76rem; font-weight: 600; color: var(--accent); text-decoration: none; }
   .full-report-link:hover { color: var(--accent-dark); text-decoration: underline; }
+  .export-links { margin-top: 10px; font-size: 0.76rem; color: var(--text3); display: flex; align-items: center; gap: 6px; }
+  .export-links a { color: var(--text2); font-weight: 600; text-decoration: none; }
+  .export-links a:hover { color: var(--accent); text-decoration: underline; }
   .prec-row { display: block; margin-bottom: 12px; text-decoration: none; border-radius: 6px; padding: 4px 6px; margin: -4px -6px 8px; transition: background .12s; }
   .prec-row:hover { background: var(--bg); }
   .prec-row:hover .prec-name span:first-child { color: var(--accent-dark); text-decoration: underline; }
@@ -144,6 +147,12 @@
     <span><span class="sw" style="background:var(--old)"></span><span id="legendOld"></span></span>
   </div>
   <a id="fullReportLink" class="full-report-link" target="_blank" rel="noopener"></a>
+  <div class="export-links">
+    <span id="exportLabel"></span>
+    <a id="exportJson" href="/export/decisions.json">JSON</a>
+    <span aria-hidden="true">·</span>
+    <a id="exportCsv" href="/export/decisions.csv">CSV</a>
+  </div>
 </aside>
 <div class="wrap">
   <div class="top-row">
@@ -210,6 +219,7 @@ const STRINGS = {
     legendOld: "altes Recht (aDSG)",
     fullReportText: "Vollständiger Bericht →",
     fullReportUrl: "https://claude.ai/code/artifact/ed1966bb-b0b4-4a28-b082-e65fcf8fab5d",
+    exportLabel: "Export:",
     precedentsTitle: "Meistzitierte Präjudizien",
     precedentsSub: "BGE-Urteile, auf die sich EDÖB-Entscheide stützen",
     precedentCitedBy: n => `zitiert von ${n} Entscheid${n === 1 ? "" : "en"}`,
@@ -235,6 +245,7 @@ const STRINGS = {
     legendOld: "old law (aDSG)",
     fullReportText: "Full report →",
     fullReportUrl: "https://claude.ai/code/artifact/8a758157-ad5f-4550-8aa1-e99f7b80db3b",
+    exportLabel: "Export:",
     precedentsTitle: "Most-cited precedents",
     precedentsSub: "Federal Court (BGE) rulings EDÖB decisions rely on",
     precedentCitedBy: n => `cited by ${n} decision${n === 1 ? "" : "s"}`,
@@ -270,6 +281,7 @@ function setLang(l) {
   document.getElementById("legendOld").textContent = s.legendOld;
   document.getElementById("fullReportLink").textContent = s.fullReportText;
   document.getElementById("fullReportLink").href = s.fullReportUrl;
+  document.getElementById("exportLabel").textContent = s.exportLabel;
   document.getElementById("precedentsTitle").textContent = s.precedentsTitle;
   document.getElementById("precedentsSub").textContent = s.precedentsSub;
   renderModelBadge();

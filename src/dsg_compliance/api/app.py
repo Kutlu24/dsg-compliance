@@ -7,12 +7,14 @@ Endpoints:
 """
 from __future__ import annotations
 
+import csv
+import io
 import json
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
@@ -56,15 +58,58 @@ def get_config() -> ConfigInfo:
     )
 
 
+def _load_citation_graph() -> dict:
+    path = data_dir() / "analysis" / "citation_graph.json"
+    if not path.exists():
+        raise HTTPException(404, "citation_graph.json not built yet - run `dsg_compliance.cli build-citation-graph`")
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
 @app.get("/citation-graph")
 def get_citation_graph():
     """Serves the pre-built EDOEB-decision -> BGE-precedent citation graph
     (see analysis/citations.py and cli.py's build-citation-graph command
     for how it's generated - not computed on request)."""
-    path = data_dir() / "analysis" / "citation_graph.json"
-    if not path.exists():
-        raise HTTPException(404, "citation_graph.json not built yet - run `dsg_compliance.cli build-citation-graph`")
-    return json.loads(path.read_text(encoding="utf-8"))
+    return _load_citation_graph()
+
+
+@app.get("/export/decisions.json", include_in_schema=False)
+def export_decisions_json() -> StreamingResponse:
+    """Same data as /citation-graph, served as a downloadable file rather
+    than an inline API response - for anyone who wants the raw decision/
+    BGE-citation data to process in their own code."""
+    body = json.dumps(_load_citation_graph(), ensure_ascii=False, indent=2)
+    return StreamingResponse(
+        iter([body]),
+        media_type="application/json",
+        headers={"Content-Disposition": "attachment; filename=dsg-compliance-decisions.json"},
+    )
+
+
+@app.get("/export/decisions.csv", include_in_schema=False)
+def export_decisions_csv() -> StreamingResponse:
+    """One row per EDOEB decision: title, date, law version, source PDF,
+    and the BGE precedents it cites - for spreadsheet/code-side analysis."""
+    graph = _load_citation_graph()
+    buf = io.StringIO()
+    writer = csv.writer(buf)
+    writer.writerow(["title", "publication_date", "law_version", "pdf_url", "bge_citation_count", "bge_citations"])
+    for d in graph["decisions"]:
+        writer.writerow(
+            [
+                d["title"],
+                d.get("publication_date") or "",
+                d["law_version"],
+                d["pdf_url"],
+                len(d["bge_citations"]),
+                "; ".join(d["bge_citations"]),
+            ]
+        )
+    return StreamingResponse(
+        iter([buf.getvalue()]),
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=dsg-compliance-decisions.csv"},
+    )
 
 
 class AskRequest(BaseModel):
