@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DSG Compliance Assistant</title>
+<title>Swiss DSG Compliance Assistant</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -35,6 +35,10 @@
   h1 {
     font-family: var(--font-display); font-weight: 600; font-size: 1.85rem; letter-spacing: -0.01em;
     margin: 0 0 6px; color: var(--text); text-wrap: balance;
+  }
+  .tagline {
+    font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: 1rem;
+    color: var(--accent-dark); margin: 0 0 10px;
   }
   .subtitle { color: var(--text2); margin: 0; max-width: 560px; font-size: 0.95rem; }
   .lang-toggle { display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 3px; box-shadow: var(--shadow-sm); }
@@ -98,7 +102,8 @@
         </svg>
       </div>
       <div>
-        <h1>DSG Compliance Assistant</h1>
+        <h1>Swiss DSG Compliance Assistant</h1>
+        <p class="tagline" id="tagline"></p>
         <p class="subtitle" id="subtitle"></p>
       </div>
     </div>
@@ -126,6 +131,7 @@ const API = "";
 
 const STRINGS = {
   de: {
+    tagline: "Datenschutz mit Schweizer Präzision.",
     subtitle: "Stellen Sie eine Frage zum Schweizer Datenschutzgesetz (DSG). Jede Antwort ist mit Quellenangaben aus dem Gesetzestext (DSG/DSV) und EDÖB-Entscheiden belegt.",
     questionLabel: "Ihre Frage",
     placeholder: "z. B. \"Wie lange darf ich für die Beantwortung eines Auskunftsgesuchs brauchen?\"",
@@ -139,6 +145,7 @@ const STRINGS = {
     error: "Fehler: ",
   },
   en: {
+    tagline: "Data protection, Swiss precision.",
     subtitle: "Ask a question about the Swiss Federal Data Protection Act (DSG). Every answer is grounded in citations from the statute text (DSG/DSV) and FDPIC decisions.",
     questionLabel: "Your question",
     placeholder: "e.g. \"How long do I have to respond to an access request?\"",
@@ -168,6 +175,7 @@ function setLang(l) {
   document.getElementById("btnEn").classList.toggle("active", l === "en");
   document.documentElement.lang = l;
   const s = STRINGS[l];
+  document.getElementById("tagline").textContent = s.tagline;
   document.getElementById("subtitle").textContent = s.subtitle;
   document.getElementById("questionLabel").textContent = s.questionLabel;
   document.getElementById("question").placeholder = s.placeholder;
