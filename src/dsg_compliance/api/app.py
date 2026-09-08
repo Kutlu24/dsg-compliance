@@ -7,15 +7,16 @@ Endpoints:
 """
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from ..config import settings
+from ..config import data_dir, settings
 from ..rag.chat import AnswerWithSources, ask as ask_question
 from .errors import friendly_llm_error
 
@@ -53,6 +54,17 @@ def get_config() -> ConfigInfo:
         provider=settings.chat_provider,
         model=_MODEL_BY_PROVIDER[settings.chat_provider](),
     )
+
+
+@app.get("/citation-graph")
+def get_citation_graph():
+    """Serves the pre-built EDOEB-decision -> BGE-precedent citation graph
+    (see analysis/citations.py and cli.py's build-citation-graph command
+    for how it's generated - not computed on request)."""
+    path = data_dir() / "analysis" / "citation_graph.json"
+    if not path.exists():
+        raise HTTPException(404, "citation_graph.json not built yet - run `dsg_compliance.cli build-citation-graph`")
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 class AskRequest(BaseModel):

@@ -24,7 +24,37 @@
     background-image: radial-gradient(1100px 420px at 50% -180px, rgba(216,35,42,.06), transparent 70%);
   }
   .topbar { height: 5px; background: linear-gradient(90deg, var(--accent), var(--accent-dark)); }
-  .wrap { max-width: 820px; margin: 0 auto; padding: 40px 32px 56px; }
+  .layout {
+    display: grid; grid-template-columns: minmax(0, 260px) minmax(0, 820px) minmax(0, 260px);
+    justify-content: center; align-items: start; gap: 28px; padding: 40px 24px 56px;
+  }
+  .wrap { padding: 0; }
+  .side {
+    position: sticky; top: 40px; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 20px; box-shadow: var(--shadow);
+  }
+  .side h2 {
+    font-family: var(--font-display); font-weight: 600; font-size: 0.98rem; margin: 0 0 4px;
+  }
+  .side .side-sub { font-size: 0.74rem; color: var(--text3); margin: 0 0 16px; }
+  .side .empty { font-size: 0.8rem; color: var(--text3); }
+  .timeline-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; font-size: 0.72rem; }
+  .timeline-row .yr { width: 32px; flex-shrink: 0; color: var(--text2); font-variant-numeric: tabular-nums; }
+  .timeline-row .bars { flex: 1; display: flex; gap: 2px; height: 12px; }
+  .timeline-row .bar-seg { border-radius: 2px; }
+  .timeline-row .bar-seg.current { background: var(--ok); }
+  .timeline-row .bar-seg.old { background: var(--old); }
+  .timeline-legend { display: flex; gap: 14px; font-size: 0.7rem; color: var(--text2); margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .timeline-legend .sw { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+  .prec-row { margin-bottom: 12px; }
+  .prec-row .prec-name { font-family: var(--font-mono, monospace); font-size: 0.72rem; color: var(--text); font-weight: 600; display: flex; justify-content: space-between; margin-bottom: 4px; }
+  .prec-row .prec-count { color: var(--accent-dark); font-weight: 700; }
+  .prec-row .prec-bar-track { background: var(--bg); border-radius: 4px; height: 7px; overflow: hidden; }
+  .prec-row .prec-bar-fill { background: linear-gradient(90deg, var(--accent), var(--accent-dark)); height: 100%; border-radius: 4px; }
+  @media (max-width: 1180px) {
+    .layout { grid-template-columns: 1fr; max-width: 820px; margin: 0 auto; }
+    .side { position: static; }
+  }
   .top-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; flex-wrap: wrap; margin-bottom: 4px; }
   .brand { display: flex; align-items: flex-start; gap: 14px; }
   .brand-mark {
@@ -91,6 +121,16 @@
 </head>
 <body>
 <div class="topbar"></div>
+<div class="layout">
+<aside class="side" id="sideLeft">
+  <h2 id="timelineTitle"></h2>
+  <p class="side-sub" id="timelineSub"></p>
+  <div id="timelineBody"><p class="empty">...</p></div>
+  <div class="timeline-legend">
+    <span><span class="sw" style="background:var(--ok)"></span><span id="legendCurrent"></span></span>
+    <span><span class="sw" style="background:var(--old)"></span><span id="legendOld"></span></span>
+  </div>
+</aside>
 <div class="wrap">
   <div class="top-row">
     <div class="brand">
@@ -125,6 +165,12 @@
 
   <div id="result"></div>
 </div>
+<aside class="side" id="sideRight">
+  <h2 id="precedentsTitle"></h2>
+  <p class="side-sub" id="precedentsSub"></p>
+  <div id="precedentsBody"><p class="empty">...</p></div>
+</aside>
+</div>
 
 <script>
 const API = "";
@@ -143,6 +189,14 @@ const STRINGS = {
     current: "aktuell",
     old: "altes Recht",
     error: "Fehler: ",
+    timelineTitle: "Entscheid-Zeitachse",
+    timelineSub: "EDÖB-Entscheide pro Jahr",
+    legendCurrent: "aktuelles Recht",
+    legendOld: "altes Recht (aDSG)",
+    precedentsTitle: "Meistzitierte Präjudizien",
+    precedentsSub: "BGE-Urteile, auf die sich EDÖB-Entscheide stützen",
+    precedentCitedBy: n => `zitiert von ${n} Entscheid${n === 1 ? "" : "en"}`,
+    loading: "Lädt...",
   },
   en: {
     tagline: "Data protection, Swiss precision.",
@@ -157,8 +211,18 @@ const STRINGS = {
     current: "current",
     old: "old law",
     error: "Error: ",
+    timelineTitle: "Decision timeline",
+    timelineSub: "EDÖB decisions per year",
+    legendCurrent: "current law",
+    legendOld: "old law (aDSG)",
+    precedentsTitle: "Most-cited precedents",
+    precedentsSub: "Federal Court (BGE) rulings EDÖB decisions rely on",
+    precedentCitedBy: n => `cited by ${n} decision${n === 1 ? "" : "s"}`,
+    loading: "Loading...",
   },
 };
+
+let citationGraph = null;
 
 let lang = "de";
 let lastConfig = null;
@@ -180,7 +244,67 @@ function setLang(l) {
   document.getElementById("questionLabel").textContent = s.questionLabel;
   document.getElementById("question").placeholder = s.placeholder;
   document.getElementById("askBtn").textContent = s.ask;
+  document.getElementById("timelineTitle").textContent = s.timelineTitle;
+  document.getElementById("timelineSub").textContent = s.timelineSub;
+  document.getElementById("legendCurrent").textContent = s.legendCurrent;
+  document.getElementById("legendOld").textContent = s.legendOld;
+  document.getElementById("precedentsTitle").textContent = s.precedentsTitle;
+  document.getElementById("precedentsSub").textContent = s.precedentsSub;
   renderModelBadge();
+  renderTimeline();
+  renderPrecedents();
+}
+
+function renderTimeline() {
+  const body = document.getElementById("timelineBody");
+  if (!citationGraph) { body.innerHTML = `<p class="empty">${STRINGS[lang].loading}</p>`; return; }
+  const byYear = {};
+  for (const d of citationGraph.decisions) {
+    if (!d.publication_date) continue;
+    const year = d.publication_date.slice(0, 4);
+    const isOld = d.law_version.toLowerCase().startsWith("adsg");
+    byYear[year] = byYear[year] || { current: 0, old: 0 };
+    byYear[year][isOld ? "old" : "current"]++;
+  }
+  const years = Object.keys(byYear).sort();
+  if (!years.length) { body.innerHTML = `<p class="empty">-</p>`; return; }
+  const maxCount = Math.max(...years.map(y => byYear[y].current + byYear[y].old));
+  body.innerHTML = years.map(y => {
+    const { current, old } = byYear[y];
+    const total = current + old;
+    const widthPct = (n) => `${(n / maxCount) * 100}%`;
+    return `<div class="timeline-row">
+      <span class="yr">${y}</span>
+      <div class="bars">
+        ${current ? `<div class="bar-seg current" style="width:${widthPct(current)}" title="${current}"></div>` : ""}
+        ${old ? `<div class="bar-seg old" style="width:${widthPct(old)}" title="${old}"></div>` : ""}
+      </div>
+      <span style="color:var(--text3)">${total}</span>
+    </div>`;
+  }).join("");
+}
+
+function renderPrecedents() {
+  const body = document.getElementById("precedentsBody");
+  if (!citationGraph) { body.innerHTML = `<p class="empty">${STRINGS[lang].loading}</p>`; return; }
+  const entries = Object.entries(citationGraph.bge_frequency).sort((a, b) => b[1] - a[1]).slice(0, 10);
+  if (!entries.length) { body.innerHTML = `<p class="empty">-</p>`; return; }
+  const maxN = entries[0][1];
+  body.innerHTML = entries.map(([name, n]) => `
+    <div class="prec-row" title="${STRINGS[lang].precedentCitedBy(n)}">
+      <div class="prec-name"><span>${name}</span><span class="prec-count">${n}</span></div>
+      <div class="prec-bar-track"><div class="prec-bar-fill" style="width:${(n / maxN) * 100}%"></div></div>
+    </div>`).join("");
+}
+
+async function loadCitationGraph() {
+  try {
+    citationGraph = await (await fetch(`${API}/citation-graph`)).json();
+  } catch {
+    citationGraph = { decisions: [], bge_frequency: {} };
+  }
+  renderTimeline();
+  renderPrecedents();
 }
 
 async function errorText(res) {
@@ -250,6 +374,7 @@ async function ask() {
 
 setLang("de");
 loadConfig();
+loadCitationGraph();
 </script>
 </body>
 </html>

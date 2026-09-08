@@ -1,0 +1,625 @@
+{
+  "decisions": [
+    {
+      "title": "Décision du 17 avril 2026 en la cause Enquête au sens de l’art. 49 de la Loi fédérale sur la protection des données (LPD ; RS 235.1) contre Cream della Cream Switzerland GmbH et Philipp Plein International AG",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/2wiLGZbg5QCo/Cream%20della%20Cream%20Switzerland%20GmbH_Philipp%20Plein%20International%20AG%20D%C3%A9cision_Version%20pour%20publication.pdf",
+      "publication_date": "2026-04-17",
+      "law_version": "DSG (ab 01.09.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Verfügung des EDÖB vom 28. April 2025, Inkasso-Team AG, Bekanntgabe von Personendaten im Internet",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/g6YFHr4V33nO/Verf%C3%BCgung%20des%20ED%C3%96B%20vom%2028.%20April%202025%2C%20Inkasso-Team%20AG%2C%20Bekanntgabe%20von%20Personendaten%20im%20Internet.pdf",
+      "publication_date": "2025-06-26",
+      "law_version": "DSG (ab 01.09.2023)",
+      "bge_citations": [
+        "BGE 138 II 346",
+        "BGE 136 II 508"
+      ]
+    },
+    {
+      "title": "Verfügung vom 29. Januar 2025, Cembra Money Bank AG,  gesetzliche Fristen für die Behandlung von Auskunftsgesuchen und Mitteilung der bearbeitenden Personendaten als solche",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/ogr0GP9OAnXZ/Verf%C3%BCgung%20vom%2029.%20Januar%202025%20in%20Sachen%20Untersuchung%20nach%20Art.%2049%20des%20Bundesgesetzes%20%C3%BCber%20den%20Datenschutz%20gegen%20Cembra%20Money%20Bank%20AG.pdf",
+      "publication_date": "2025-07-01",
+      "law_version": "DSG (ab 01.09.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Verfügung des EDÖB vom  9. April 2024, Bürgerforum Schweiz",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/FP6zwhG5Wcxk/20240409%20Verf%C3%BCgung%20betreffend%20B%C3%BCrgerforum.%20(rechtskr%C3%A4ftig).pdf",
+      "publication_date": "2024-04-09",
+      "law_version": "DSG (ab 01.09.2023)",
+      "bge_citations": [
+        "BGE 127 III 481",
+        "BGE 136 II 508"
+      ]
+    },
+    {
+      "title": "Schlussbericht und Empfehlungen vom 25. April 2024 des Eidgenössischen Datenschutz- und Öffentlichkeitsbeauftragten (EDÖB) in Sachen BAZG aufgrund Ransomware-Vorfall",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/LhJaQSEF2vXT/20240430_Schlussbericht_BAZG.pdf",
+      "publication_date": "2024-04-25",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": [
+        "BGE 147 I 346"
+      ]
+    },
+    {
+      "title": "Schlussbericht und Empfehlungen vom 25. April 2024 des Eidgenössischen Datenschutz- und Öffentlichkeitsbeauftragten (EDÖB) in Sachen fedpol aufgrund Ransomware-Vorfall",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/QK512swGfwQO/20240430_Schlussbericht_fedpol.pdf",
+      "publication_date": "2024-04-25",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": [
+        "BGE 147 I 346"
+      ]
+    },
+    {
+      "title": "Schlussbericht und Empfehlungen vom 25. April 2024 des Eidgenössischen Datenschutz- und Öffentlichkeitsbeauftragten (EDÖB) in Sachen Xplain AG aufgrund Ransomware-Vorfall",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/JlDy8LQbE3iI/20240430_Schlussbericht_Xplain.pdf",
+      "publication_date": "2024-04-25",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Schlussbericht  vom 15. April 2024  des  Eidgenössischen Datenschutz- und Öffentlichkeitsbeauftragten  (EDÖB)  in Sachen  Digitec Galaxus AG",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/UbgCr4c7n-cD/20240415_Schlussbericht_Galaxus.pdf",
+      "publication_date": "2024-04-15",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": [
+        "BGE 133 I 77",
+        "BGE 142 III 263",
+        "BGE 136 II 508",
+        "BGE 138 II 346"
+      ]
+    },
+    {
+      "title": "Schlussbericht vom 11. April 2024 i.S. Ricardo AG und TX Group  AG -(Nach Zugangsgewährung gemäss BGÖ ungeschwärzt (Art. 2 VBGÖ))",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/dIdWnND9-oc5/20241023%20Schlussbericht%20vom%2011.%20April%202024%20i.S.%20Ricardo%20AG%20und%20TX%20Group%20%20AG%20-(Nach%20Zugangsgew%C3%A4hrung%20gem%C3%A4ss%20BG%C3%96%20ungeschw%C3%A4rzt%20(Art.%202%20VBG%C3%96)).pdf",
+      "publication_date": "2024-04-11",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": [
+        "BGE 134 I 140",
+        "BGE 133 I 77",
+        "BGE 138 II 346",
+        "BGE 125 II 473",
+        "BGE 136 II 508",
+        "BGE 142 III 263"
+      ]
+    },
+    {
+      "title": "Schlussbericht vom 11. April 2024 i.S. Ricardo AG und TX Group  AG (geschwärzt)",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/kVlJcjt3ZBmQ/20241023%20Schlussbericht%20vom%2011.%20April%202024%20i.S.%20Ricardo%20AG%20und%20TX%20Group%20%20AG.pdf",
+      "publication_date": "2024-04-11",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": [
+        "BGE 134 I 140",
+        "BGE 133 I 77",
+        "BGE 138 II 346",
+        "BGE 125 II 473",
+        "BGE 136 II 508",
+        "BGE 142 III 263"
+      ]
+    },
+    {
+      "title": "Schlussbericht Mitto AG vom 17. März 2023",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/o18WjBUggwBw/Schlussbericht%20Mitto%20DE.pdf",
+      "publication_date": "2023-03-17",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Final Report on Mitto AG of 17 March 2023",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/LJFXLwq-uUzl/Schlussbericht%20Mitto%20EN.pdf",
+      "publication_date": "2023-03-17",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Schlussbericht und Empfehlung vom 17. März 2023 mit Ergänzungen vom 3. Mai 2023. Bonitäts- und Inkassounternehmen",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/euyCnKnTJE8A/Schlussbericht%20und%20Empfehlung%20Bonit%C3%A4ts-%20und%20Inkassounternehmen.pdf",
+      "publication_date": "2023-03-17",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": [
+        "BGE 138 II 346",
+        "BGE 136 II 508"
+      ]
+    },
+    {
+      "title": "Schlussbericht Covid-Testzentren vom 16. März 2023 mit Ergänzungen 28.04.2023 (geschwärzt)",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/BoCdVp3MSjxm/Schlussbericht.%2020230316%20mit%20Erg%C3%A4nzungen%20vom%2020230428%20geschw%C3%A4rzt.pdf",
+      "publication_date": "2023-03-16",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Schlussbericht vom 3. März 2023 mit Ergänzungen vom 17. Mai 2023 des EDÖB in Sachen Once Dating AG gemäss Art. 29 DSG",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/DJODJRWEprFy/Schlussbericht%20vom%203.%20M%C3%A4rz%202023%20mit%20Erg%C3%A4nzungen%20vom%2017.%20Mai%202023%20des%20ED%C3%96B%20in%20Sachen%20Once%20Dating%20AG%20gem%C3%A4ss%20Art.%2029%20DSG.pdf",
+      "publication_date": "2023-03-03",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": [
+        "BGE 136 II 508"
+      ]
+    },
+    {
+      "title": "Schlussbericht vom 17. Juni 2022 mit Ergänzungen vom 13. Oktober 2022 in Sachen Nationale Organspenderegister (NOSR)",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/jKbcY4QwnGnk/20220617%20-%20Schlussbericht%20vom%2017.%20Juni%202022%20mit%20Erg%C3%A4nzugen%20vom%2013.%20Oktober%202022%20in%20Sachen%20Nationale%20Organspenderegister%20(NOSR).pdf",
+      "publication_date": "2022-06-17",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Schlussbericht Sachverhaltsabklärung vom 31. August 2021 betreffend \"meineimpfungen.ch\"",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/4U-A4XC7vAIw/Schlussbericht%20und%20Empfehlungen%20%C3%BCberarbeitet.%2020210831.%20meineimpfungen.ch%20(3).pdf",
+      "publication_date": "2021-08-31",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Rapport final et recommandations du 4 août 2021 concernant l'application \"SocialPass\"",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/ZNJEjAp8ku7C/20210804_Rapport%20final%20et%20recommandations_SocialPass.pdf",
+      "publication_date": "2021-08-04",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Empfehlung vom 20. April 2018 zum Bonusprogramm \"Helsana+\"",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/3oZs10HjMziR/20180420%20-%20Empfehlung%20vom%2020.04.2018%20zum%20Bonusprogramm%20Helsana.pdf",
+      "publication_date": "2018-04-20",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Empfehlung ESTV vom 18. Dezember 2017 betreffend das Recht auf Information in der internationalen Amtshilfe in Steuersachen",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/1hVZSmksKAsM/Empfehlung%20ESTV%20vom%2018.12.2017%20betreffend%20das%20Recht%20auf%20Information%20.pdf",
+      "publication_date": "2017-12-18",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": [
+        "BGE 142 II 161",
+        "BGE 141 II 436",
+        "BGE 136 II 508"
+      ]
+    },
+    {
+      "title": "Schlussbericht vom 19. August 2016 betreffend Datenschutz bei Windows 10 (inkl. Anhang vom 25. Januar 2017 und Formulierungsvorschläge der Microsoft Corporation vom 30. November 2016)",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/-bJIWn9KHZ36/2017%20-%20Datenschutz%20bei%20Windows10%20(Schlussbericht).pdf",
+      "publication_date": "2016-08-19",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": [
+        "BGE 138 II 346",
+        "BGE 125 II 473",
+        "BGE 136 II 508"
+      ]
+    },
+    {
+      "title": "Empfehlung vom 04. Januar 2016 betreffend die Kontrolle in Sachen Swiss Pass",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/228h8NzUurzo/2016%20-%20Datenschutz%20beim%20Swisspass%20-%20Empfehlung%20EDOEB.pdf",
+      "publication_date": "2016-01-04",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Schlussbericht vom 1. Juni 2015 betreffend E-Finance von Postfinance",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/jfICfkoGAJGW/20150601%20schlussbericht_e-finance_postfinance.pdf",
+      "publication_date": "2015-06-01",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": [
+        "BGE 125 II 473",
+        "BGE 136 II 508"
+      ]
+    },
+    {
+      "title": "Empfehlung  vom 6. November 2014 an die Itonex AG www.moneyhouse.ch",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/A0Vp79I-JdBG/2014%20-%20Empfehlung%20EDOEB%20zu%20Moneyhouse.pdf",
+      "publication_date": "2014-11-06",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": [
+        "BGE 125 II 473",
+        "BGE 136 II 508"
+      ]
+    },
+    {
+      "title": "Empfehlung vom 17. September 2014 betreffend Umsetzung der Auskunfts- und Widerspruchsrechte",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/fpCMGBC8QV4G/20140917%20-%20Umsetzung%20der%20Auskunfts-und%20Widerspruchsrechte.pdf",
+      "publication_date": "2014-09-17",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Schlussbericht vom 3. Juni 2014 betreffend Risikomanagementsystem eines Finanzdienstleisters",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/oRlvj0Az802K/schlussbericht_betreffendrisikomanagementsystemeinesfinanzdienst.pdf",
+      "publication_date": "2014-06-03",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": [
+        "BGE 136 II 508",
+        "BGE 125 II 473"
+      ]
+    },
+    {
+      "title": "Schlussbericht vom 7. April 2014 zur Nachkontrolle betreffend Kundenbindungsprogramm M-Cumulus",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/E5DZ-0lzwS-6/20140407%20schlussbericht_mcumulus_nachkontrolle.pdf",
+      "publication_date": "2014-04-07",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Empfehlung vom 15. November 2012 an die itonex AG (www.moneyhouse.ch)",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/7NnyTFjNw87i/20121115%20-%20Empfehlung%20%20an%20die%20Itonex%20AG%20www.moneyhouse.ch.pdf",
+      "publication_date": "2012-11-15",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Medienmitteilung vom 16. Oktober 2012 und Empfehlungen betreffend Bankmitarbeiterdaten",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/wF3-zqisxIn7/20121016%20medienmitteilung_und_empfehlungen_bankmitarbeiterdaten.pdf",
+      "publication_date": "2012-10-16",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Empfehlung vom 15. Oktober 2012 an die Zürcher Kantonalbank",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/uzUuqiKXJfUt/20121015%20-%20Empfehlung%20an%20die%20Zuercher%20Kantonalbank.pdf",
+      "publication_date": "2012-10-15",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": [
+        "BGE 137 II 431"
+      ]
+    },
+    {
+      "title": "Empfehlung vom 15. Oktober 2012 an die HSBC Private Bank Suisse SA",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/9RSieAwHwXRu/20121015%20%20-%20Empfehlung%20an%20die%20HSBC%20Private%20Bank%20Suisse%20SA.pdf",
+      "publication_date": "2012-10-15",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": [
+        "BGE 137 II 431"
+      ]
+    },
+    {
+      "title": "Empfehlung vom 15. Oktober 2012 an die Bank Julius Bär & Co AG",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/s3fjG5qu3htL/20151015%20-%20Empfehlung%20an%20die%20Bank%20Julius%20Baer%20Co%20AG.pdf",
+      "publication_date": "2012-10-15",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": [
+        "BGE 137 II 431"
+      ]
+    },
+    {
+      "title": "Empfehlung vom 15. Oktober 2012 an die Credit Suisse AG",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/IA1nMj5Dot-R/20121015%20-%20Empfehlung%20an%20die%20Credit%20Suisse%20AG.pdf",
+      "publication_date": "2012-10-15",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": [
+        "BGE 137 II 431"
+      ]
+    },
+    {
+      "title": "Empfehlung vom 15. Oktober 2012 an die Basler Kantonalbank",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/rPK19OcxOZwA/20121015%20-%20Empfehlung%20an%20die%20Basler%20Kantonalbank.pdf",
+      "publication_date": "2012-10-15",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": [
+        "BGE 137 II 431"
+      ]
+    },
+    {
+      "title": "Medienmitteilung vom 6. September 2012: Übermittlung von Mitarbeiterdaten",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/gazA0SS-Dc3x/20120906%20medienmitteilung_uebermittlung_von_mitarbeiterdaten.pdf",
+      "publication_date": "2012-09-06",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Schlussbericht vom 13. September 2010 betreffend Biometrische Daten für ein Reservationssystem",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/2fBOBFdbnJmk/20100913%20-%20Biometrische%20Daten%20f%C3%BCr%20ein%20Reservationssystem.pdf",
+      "publication_date": "2010-09-13",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Rapport final du 13 septembre 2010 concernant les données biométriques pour un système de réservation",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/vlK4NpwRKKsX/20100913%20-%20Donnees%20biometriques%20pour%20un%20systeme%20de%20reservation.pdf",
+      "publication_date": "2010-09-13",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Google Street View: Weiterzug an das Bundesverwaltungsgericht (2009)",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/0NTDt-eurbhY/google_street_viewweiterzugandasbundesverwaltungsgericht%20(1).pdf",
+      "publication_date": "2009-11-11",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": [
+        "BGE 118 IV 45",
+        "BGE 129 III 715",
+        "BGE 97 II 101",
+        "BGE 97 II 97",
+        "BGE 118 IV 41"
+      ]
+    },
+    {
+      "title": "Empfehlung vom 11. September 2009 betreffend Google Street View",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/aZ0kKqF4f-1-/20090911%20-%20Google%20Street%20View%20Empfehlung.pdf",
+      "publication_date": "2009-09-11",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": [
+        "BGE 129 III 715"
+      ]
+    },
+    {
+      "title": "Empfehlung vom 8. Juli 2009 betreffend Zustellung von Pensionskassenausweisen",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/yEMDovHEDATZ/20090708%20-%20Zustellung%20von%20Pensionskassenausweisen.pdf",
+      "publication_date": "2009-07-08",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Logistep: Weiterzug an das Bundesgericht (2010)",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/ciQe4KrAepRA/logistep_weiterzugandasbundesgericht.pdf",
+      "publication_date": "2009-06-26",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": [
+        "BGE 97 II 97",
+        "BGE 134 IV 266"
+      ]
+    },
+    {
+      "title": "Recommandation du 18 février 2009 à propos d'une caméra de surveillance installée dans le Chalet SJ",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/nPxfz-k3jdkV/20090218%20-%20Recommandation%20a%20propos%20d'une%20camera%20de%20surveillance%20install%C3%A9e%20dans%20le%20Chalet%20SJ.pdf",
+      "publication_date": "2009-02-18",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Empfehlung vom 16. Dezember 2008 betreffend Informationsservice über Mieterbonität",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/FyCRaSpaL7Vc/20081216%20-%20Informationsservice%20%C3%BCber%20Mieterbonitaet.pdf",
+      "publication_date": "2008-12-16",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": [
+        "BGE 125 II 473"
+      ]
+    },
+    {
+      "title": "Mitteilung vom 28. November 2008: Minimale Einwilligungsklausel zu Kreditkarten",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/CzA6fAu5VEfN/20081128%20minimale_einwilligungsklauselzukreditkarten.pdf",
+      "publication_date": "2008-11-28",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Recommandation du 23 juin 2008 à propos du site internet www.okdoc.ch de la société bonus.ch SA",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/8mHh8CWmqgWk/20080623%20-%20Recommandation%20a%20propos%20du%20site%20internet%20www.okdoc.ch%20de%20la%20soci%C3%A9t%C3%A9%20Bonus.ch%20SA.pdf",
+      "publication_date": "2008-06-23",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "KSS: Weiterzug an das Bundesverwaltungsgericht (2010)",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/1HwhXtQ3lTrV/kss_weiterzug_andasbundesverwaltungsgericht.pdf",
+      "publication_date": "2008-06-10",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Zusammenfassung der Empfehlung vom 9. Januar 2008 betreffend Bearbeitung von Personendaten zur Bekämpfung von Urheberrechtsverletzungen in Peer-to-Peer-Netzwerken",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/XD6wrDbFt0Qz/20080109%20zusammenfassung_empfehlung_p2p.pdf",
+      "publication_date": "2008-01-09",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Empfehlung vom 9. Januar 2008 betreffend Bearbeitung von Personendaten im Rahmen der Bekämpfung von Urheberrechtsverletzungen in P2P-Netzwerken",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/VzSlrkWUVtmV/20080109%20-%20Bearbeitung%20von%20Personendaten%20im%20Rahmen%20der%20Bek%C3%A4mpfung%20von%20Urheberrechtsverletzungen%20in%20P2P-Netzwerken.pdf",
+      "publication_date": "2008-01-09",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": [
+        "BGE 95 I 109"
+      ]
+    },
+    {
+      "title": "Empfehlung vom 25. Mai 2007 betreffend Drogen- und Alkoholtests bei den SBB",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/nJPlJsdovItq/20070525%20-%20Drogen-und%20Alkoholtests%20bei%20den%20SBB.pdf",
+      "publication_date": "2007-05-25",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Empfehlung vom 2. Mai 2007 betreffend Publikation von Handelsregisterdaten im Internet durch Private (Moneyhouse I)",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/1lVvc9squa4R/20070502%20-%20Publikation%20von%20handelsregistrerdaten%20im%20Internet%20durch%20private.pdf",
+      "publication_date": "2007-05-02",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Schlussbericht vom 17. April 2007 betreffend Vertrauensärztlicher Dienst der CSS Kranken-Versicherung AG",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/AivIDb7mjd1a/20070417%20-%20Vertrauensaerztlicher%20Dienst%20der%20CSS%20Krankenversicherung%20AG.pdf",
+      "publication_date": "2007-04-17",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Zusammenfassung des Schlussberichtes vom 30. Januar 2007 betreffend Kontrolle der Videoüberwachungsanlage bei der Firma ALDI SUISSE AG  (am Beispiel einer ALDI-Filiale)",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/HmVSbbYPdvdI/20070130%20-%20Kontrolle%20der%20Video%C3%BCberwachungsanlage%20bei%20der%20Firma%20ALDI%20Suisse.pdf",
+      "publication_date": "2007-01-30",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Schlussbericht vom 19. September 2006 betreffend Videoüberwachungsanlage bei Aldi",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/TSa5vTXNY-e9/20060919%20schlussbericht_aldi.pdf",
+      "publication_date": "2006-09-19",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Zusammenfassung des Schlussberichts vom 11. April 2006 betreffend biometrische Kontrollen bei Sport- und Freizeitanlagen (mit Anhang)",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/wbVLUSm8K01I/20060411%20zusammenfassung_schlussbericht_undanhang_KSS.pdf",
+      "publication_date": "2006-04-11",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Schlussbericht vom 11. April 2006 betreffend Biometrische Kontrollen bei Sport- und Freizeitanlagen - Schlussbericht mit Empfehlungen",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/6mZ-HX5oAlq5/20060411%20-%20Biometrische%20Kontrollen%20bei%20Sport%20und%20Freizeitanlagen.pdf",
+      "publication_date": "2006-04-11",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Schlussbericht vom 6. Juni 2005 betreffend Einsatz von Biometrie beim Check-In und Boarding im Rahmen des Pilotprojektes “Secure Check”",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/O6XTbcIgNkFV/Schlussbericht%20vom%206.%20Juni%202005%20Einsatz%20von%20Biometrie%20beim%20Check-In%20und%20Boarding%20im%20Rahmen%20des%20Pilotprojektes%20%E2%80%9CSecure%20Check%E2%80%9D.pdf",
+      "publication_date": "2005-06-06",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Zusammenfassung des Schlussberichtes vom 6. Juni 2005 Pilotprojekt Secure Check – Einsatz von Biometrie beim Check-In und Boarding am Flughafen Zürich-Kloten",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/9fcficgcUEIw/zusammenfassung_schlussberichtcheckport.pdf",
+      "publication_date": "2005-06-06",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Zusammenfassung des Schlussberichts vom 23. Mai 2005 betreffend Kundenbindungsprogramm M-Cumulus",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/niCd5-EdtY45/20050523%20zusammenfassung_schlussberichtm-cumulus.pdf",
+      "publication_date": "2005-05-23",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Zusammenfassung des Schlussberichts vom 23. Mai 2005 betreffend Kundenbindungsprogramm Coop Supercard",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/c5x6y3QrAzkh/20050523%20zusammenfassung_schlussberichtcoopsupercard.pdf",
+      "publication_date": "2005-05-23",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Schlussbericht mit Empfehlungen vom 23. Mai 2005 betreffend Kundenbindungsprogramm Supercard",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/qyYQ1wcvZDbm/20050523%20-%20Kundenbindungsprogramm%20Supercard-Schlussbericht.pdf",
+      "publication_date": "2005-05-23",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Schlussbericht mit Empfehlungen vom 23. Mai 2005 betreffend Kundenbindungsprogramm M-Cumulus",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/TGL6sN-bH3FR/20050523%20-%20Kundenbindungsprogrammm%20Cumulus-Schlussbericht.pdf",
+      "publication_date": "2005-05-23",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Empfehlung vom 16. Januar 2004 betreffend Planungstool Top Orange Switzerland (TOP OCH)",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/petNWx96C58E/20040116%20-%20Planungstool%20top%20Orange%20Switzerland%20(top%20och).pdf",
+      "publication_date": "2004-01-16",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Empfehlung vom 28. Januar 2003 betreffend Vaterschafts-/Verwandtschaftstest",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/RCjkEfdda5L5/20030128%20-%20Vaterschafts-Verwandtschaftstest.pdf",
+      "publication_date": "2003-01-28",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Empfehlung vom 24. Januar 2003 betreffend Unerwünschte Werbung per Mail (\"Spam\")",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/eK2tbtjbvJJ7/20030124%20-%20Unerw%C3%BCnschte%20Werbung%20per%20Mail%20(spam).pdf",
+      "publication_date": "2003-01-24",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Empfehlung vom 16. Oktober 2002 betreffend Vaterschaftstest",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/aIw8jpNVA6-M/20021016%20-%20Vaterschaftstest.pdf",
+      "publication_date": "2002-10-16",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Recours du 6 décembre 2001 concernant la recommandation à propos des formulaires de demande de logement",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/nuh3h8SBU97r/20011206%20-%20Recours%20Recommandation%20%C3%A0%20propos%20des%20formulaires%20de%20demande%20de%20logements.pdf",
+      "publication_date": "2001-12-06",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Empfehlung vom 28. November 2001 betreffend CD-ROM Black Book",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/Rc0jQSmlsUqY/20011128%20-%20CD-Rom%20Black-%20Book.pdf",
+      "publication_date": "2001-11-28",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Recommandation du 6 septembre 2001 à propos des formulaires de demande de logement",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/JXVyslma-4wI/20010906%20-%20Recommandation%20%C3%A0%20propos%20des%20formulaires%20de%20demande%20de%20logement.pdf",
+      "publication_date": "2001-09-06",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Empfehlung vom 13. Juni 2001 betreffend Weitergabe von Personendaten aus Kontoeröffnungsanträgen",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/trTm2FyJWd5U/20010613%20-%20Weitergabe%20von%20personendaten%20aus%20Kontoer%C3%B6ffnungsantr%C3%A4gen.pdf",
+      "publication_date": "2001-06-13",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Empfehlung vom 22. Februar 2001 betreffend Drogentests in der Lehre",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/TkCwAjduOUqm/20010222%20-%20Drogentests%20in%20der%20Lehre.pdf",
+      "publication_date": "2001-02-22",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Empfehlung vom 19. Februar 2001 betreffend Nachsendeauftrag der Schweizerischen Post",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/sVBvdPiBcNbd/20010219%20-%20Nachsendeauftrag%20der%20Schweizerischen%20Post.pdf",
+      "publication_date": "2001-02-19",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Empfehlung vom 7. Dezember 2000 betreffend Absenzmanagement",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/FqZMdrtZlJ8z/20001207%20-%20Absenzmanagement.pdf",
+      "publication_date": "2000-12-07",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Empfehlung vom 13. März 1996 betreffend ISDN-Rufnummeranzeige",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/l9axxzlxHLqR/19960313%20-%20ISDN%20Rufnummeranzeige.pdf",
+      "publication_date": "1996-03-13",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Sachverhalt vom 21. November 1994 betreffend Anmeldeformulare für Mietwohnungen",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/W8kmqmfQjeBl/19941121%20-%20Anmeldeformulare%20f%C3%BCr%20Mietwohnungen.pdf",
+      "publication_date": "1994-11-21",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    },
+    {
+      "title": "Contatations du 21 novembre 1994 à propos des données recueillies auprès de personnes intéressées à la location d'un logement",
+      "pdf_url": "https://www.edoeb.admin.ch/dam/de/sd-web/p7bFzVqAniv4/19941121%20-%20Donnees%20recueillies%20aupres%20de%20personnes%20interess%C3%A9es.pdf",
+      "publication_date": "1994-11-21",
+      "law_version": "aDSG (bis 31.08.2023)",
+      "bge_citations": []
+    }
+  ],
+  "bge_frequency": {
+    "BGE 138 II 346": 6,
+    "BGE 136 II 508": 12,
+    "BGE 127 III 481": 1,
+    "BGE 147 I 346": 2,
+    "BGE 133 I 77": 3,
+    "BGE 142 III 263": 3,
+    "BGE 134 I 140": 2,
+    "BGE 125 II 473": 7,
+    "BGE 142 II 161": 1,
+    "BGE 141 II 436": 1,
+    "BGE 137 II 431": 5,
+    "BGE 118 IV 45": 1,
+    "BGE 129 III 715": 2,
+    "BGE 97 II 101": 1,
+    "BGE 97 II 97": 2,
+    "BGE 118 IV 41": 1,
+    "BGE 134 IV 266": 1,
+    "BGE 95 I 109": 1
+  }
+}
