@@ -6,7 +6,7 @@
 <title>Swiss DSG Compliance Assistant</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #f3f4f8; --surface: #fff; --border: #e2e5ec; --text: #181c2a;
@@ -16,11 +16,11 @@
     --shadow: 0 1px 2px rgba(24,28,42,.04), 0 8px 24px -12px rgba(24,28,42,.10);
     --shadow-sm: 0 1px 2px rgba(24,28,42,.06);
     --font-display: "Fraunces", Georgia, serif;
-    --font-body: "Source Sans 3", -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-body: Arial, "Helvetica Neue", Helvetica, sans-serif;
   }
   * { box-sizing: border-box; }
   body {
-    font-family: var(--font-body); background: var(--bg); color: var(--text); margin: 0; line-height: 1.55;
+    font-family: var(--font-body); font-size: 17px; background: var(--bg); color: var(--text); margin: 0; line-height: 1.55;
     background-image: radial-gradient(1100px 420px at 50% -180px, rgba(216,35,42,.06), transparent 70%);
   }
   .topbar { height: 5px; background: linear-gradient(90deg, var(--accent), var(--accent-dark)); }
@@ -74,7 +74,7 @@
     font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: 1rem;
     color: var(--accent-dark); margin: 0 0 10px;
   }
-  .subtitle { color: var(--text2); margin: 0; max-width: 560px; font-size: 0.95rem; }
+  .subtitle { color: var(--text2); margin: 0; max-width: 560px; font-size: 1.02rem; }
   .lang-toggle { display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 3px; box-shadow: var(--shadow-sm); }
   .lang-toggle button { background: transparent; border: none; padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; color: var(--text2); font-family: inherit; }
   .lang-toggle button.active { background: var(--accent); color: #fff; }
@@ -88,7 +88,7 @@
   label.field-label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px; }
   textarea {
     width: 100%; min-height: 84px; padding: 13px 14px; border: 1px solid var(--border); border-radius: 10px;
-    font-family: inherit; font-size: 0.95rem; resize: vertical; background: var(--bg); transition: border-color .15s, box-shadow .15s;
+    font-family: inherit; font-size: 1.02rem; resize: vertical; background: var(--bg); transition: border-color .15s, box-shadow .15s;
   }
   textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); background: var(--surface); }
   button.ask {
@@ -107,9 +107,9 @@
   }
   @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) { .answer-card { animation: none; } }
-  .answer-text { white-space: pre-wrap; font-size: 0.97rem; margin-bottom: 22px; }
+  .answer-text { white-space: pre-wrap; font-size: 1.08rem; margin-bottom: 22px; }
   .sources h3 { font-family: var(--font-display); font-weight: 600; font-size: 1rem; color: var(--text); margin-bottom: 12px; }
-  .source-item { padding: 12px 0; border-top: 1px solid var(--border); font-size: 0.86rem; }
+  .source-item { padding: 12px 0; border-top: 1px solid var(--border); font-size: 0.94rem; }
   .source-item:first-child { border-top: none; padding-top: 0; }
   .source-item-head { display: flex; align-items: flex-start; gap: 10px; }
   .source-excerpt { margin-top: 8px; }
@@ -118,7 +118,8 @@
   .source-excerpt summary::before { content: "▸"; font-size: 0.7rem; transition: transform .12s; }
   .source-excerpt[open] summary::before { transform: rotate(90deg); }
   .source-excerpt summary:hover { color: var(--accent); }
-  .excerpt-text { margin-top: 8px; padding: 12px 14px; background: var(--bg); border-left: 2px solid var(--border); border-radius: 6px; font-size: 0.82rem; color: var(--text); white-space: pre-wrap; max-height: 260px; overflow-y: auto; }
+  .excerpt-text { margin-top: 8px; padding: 12px 14px; background: var(--bg); border-left: 2px solid var(--border); border-radius: 6px; font-size: 0.92rem; color: var(--text); white-space: pre-wrap; max-height: 260px; overflow-y: auto; }
+  .excerpt-text mark.hl { background: #fde68a; color: var(--text); border-radius: 3px; padding: 0 2px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
   .badge { flex-shrink: 0; font-size: 0.66rem; font-weight: 700; padding: 3px 9px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 1px; }
   .badge-current { background: var(--ok-soft); color: var(--ok); }
   .badge-old { background: var(--old-soft); color: var(--old); }
@@ -361,6 +362,47 @@ function sourceBadge(lawVersion) {
   return `<span class="badge ${isOld ? 'badge-old' : 'badge-current'}">${label}</span>`;
 }
 
+const STOPWORDS = new Set([
+  "der","die","das","und","oder","ist","sind","ein","eine","einen","einer","dem","den","des",
+  "von","zu","im","in","auf","für","mit","nicht","auch","sich","wird","werden","muss","kann",
+  "the","and","or","is","are","a","an","of","to","in","for","that","this","how","what","when",
+  "do","i","have","can","must","be","if","not","so","as","by","on","it","its",
+]);
+
+function normWords(str) {
+  return str.toLowerCase().normalize("NFKD").replace(/[̀-ͯ]/g, "")
+    .split(/[^a-zäöüß0-9]+/i).filter(w => w.length > 3 && !STOPWORDS.has(w));
+}
+
+// Highlights the sentence in `excerpt` with the most keyword overlap with
+// `question` - a cheap client-side heuristic (no re-ranking call to the
+// LLM/embedding API) to point the reader at the specific clause worth
+// reading, addressing feedback that a long excerpt still buries the point.
+//
+// Matching is substring-based (word A "hits" word B if either contains the
+// other), not exact-token equality: German compounding means the question's
+// "Auskunftsgesuchs" and the statute's plain "Auskunft" are the same match
+// a reader would make, but share zero exact tokens - exact matching missed
+// the single most relevant excerpt (the actual deadline clause) entirely.
+function highlightExcerpt(excerpt, question) {
+  const esc = (str) => str.replace(/</g, "&lt;");
+  const qWords = normWords(question);
+  if (!qWords.length) return esc(excerpt);
+
+  const sentences = excerpt.split(/(?<=[.!?])\s+(?=[A-ZÄÖÜ0-9])|\n+/);
+  let bestIdx = -1, bestScore = 0;
+  sentences.forEach((sent, i) => {
+    const words = normWords(sent);
+    let score = 0;
+    for (const w of words) {
+      if (qWords.some(qw => w.includes(qw) || qw.includes(w))) score++;
+    }
+    if (score > bestScore) { bestScore = score; bestIdx = i; }
+  });
+  if (bestIdx === -1 || bestScore === 0) return esc(excerpt);
+  return sentences.map((sent, i) => i === bestIdx ? `<mark class="hl">${esc(sent)}</mark>` : esc(sent)).join(" ");
+}
+
 async function ask() {
   const question = document.getElementById("question").value.trim();
   if (!question) return;
@@ -383,7 +425,6 @@ async function ask() {
     }
     const data = await res.json();
     statusEl.textContent = "";
-    const esc = (str) => str.replace(/</g, "&lt;");
     const sourcesHtml = data.sources.map(src => `
       <div class="source-item">
         <div class="source-item-head">
@@ -392,7 +433,7 @@ async function ask() {
         </div>
         <details class="source-excerpt">
           <summary>${s.showExcerpt}</summary>
-          <div class="excerpt-text">${esc(src.excerpt)}</div>
+          <div class="excerpt-text">${highlightExcerpt(src.excerpt, question)}</div>
         </details>
       </div>`).join("");
     document.getElementById("result").innerHTML = `
