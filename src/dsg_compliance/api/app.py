@@ -19,7 +19,7 @@ from ..config import settings
 from ..rag.chat import AnswerWithSources, ask as ask_question
 from .errors import friendly_llm_error
 
-app = FastAPI(title="DSG Compliance")
+app = FastAPI(title="DSG Compliance Assistant")
 app.add_middleware(
     CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"]
 )
