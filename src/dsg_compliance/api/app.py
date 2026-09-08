@@ -58,11 +58,15 @@ def get_config() -> ConfigInfo:
 class AskRequest(BaseModel):
     question: str
     top_k: int = 5
+    lang: str = "de"  # "de" | "en" - which language the LLM must answer in,
+    # set explicitly by the UI's language toggle rather than inferred from
+    # the question text (unreliable: the German-heavy retrieved excerpts
+    # were pulling weaker models into answering in German regardless).
 
 
 @app.post("/ask", response_model=AnswerWithSources)
 def ask_endpoint(req: AskRequest) -> AnswerWithSources:
     try:
-        return ask_question(req.question, top_k=req.top_k)
+        return ask_question(req.question, top_k=req.top_k, lang=req.lang)
     except Exception as e:
         raise friendly_llm_error(e) from e

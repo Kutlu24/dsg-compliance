@@ -213,7 +213,7 @@ async function ask() {
     const res = await fetch(`${API}/ask`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ question }),
+      body: JSON.stringify({ question, lang }),
     });
     if (!res.ok) {
       statusEl.textContent = s.error + await errorText(res);

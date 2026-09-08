@@ -27,9 +27,10 @@ Rules:
   law, not current law.
 - If the excerpts do not contain enough information to answer, say so plainly - do not guess or
   fill gaps with general knowledge.
-- Answer in the same language as the question.
 - This is informational only, not legal advice - end your answer with a short note saying so.
 """
+
+_LANG_NAMES = {"de": "German", "en": "English"}
 
 
 class SourceRef(BaseModel):
@@ -61,7 +62,22 @@ def _format_context(hits: list[dict]) -> str:
     return "\n\n".join(blocks)
 
 
-def _call_glm(question: str, context: str) -> str:
+def _system_prompt_for(lang: str) -> str:
+    lang_name = _LANG_NAMES.get(lang, "German")
+    # Explicit and repeated on purpose: the excerpts block below is entirely
+    # German-language statute/decision text and dominates the prompt by
+    # volume, which was observed to pull weaker models (glm-4.5-flash) into
+    # answering in German even when asked in English - inferring the answer
+    # language from the question alone was not reliable, so the caller now
+    # passes the UI's selected language explicitly instead.
+    return (
+        f"{_SYSTEM_PROMPT}\n"
+        f"- Write your entire answer in {lang_name}, regardless of the language the excerpts "
+        f"below are written in. Only the source labels/titles stay in their original language."
+    )
+
+
+def _call_glm(question: str, context: str, lang: str) -> str:
     from openai import OpenAI
 
     if not settings.glm_api_key:
@@ -70,25 +86,25 @@ def _call_glm(question: str, context: str) -> str:
     response = client.chat.completions.create(
         model=settings.glm_model,
         messages=[
-            {"role": "system", "content": _SYSTEM_PROMPT},
+            {"role": "system", "content": _system_prompt_for(lang)},
             {"role": "user", "content": f"Excerpts:\n\n{context}\n\nQuestion: {question}"},
         ],
     )
     return response.choices[0].message.content
 
 
-def _call_gemini(question: str, context: str) -> str:
+def _call_gemini(question: str, context: str, lang: str) -> str:
     from google import genai
 
     if not settings.gemini_api_key:
         raise RuntimeError("GEMINI_API_KEY not set in .env")
     client = genai.Client(api_key=settings.gemini_api_key)
-    prompt = f"{_SYSTEM_PROMPT}\n\nExcerpts:\n\n{context}\n\nQuestion: {question}"
+    prompt = f"{_system_prompt_for(lang)}\n\nExcerpts:\n\n{context}\n\nQuestion: {question}"
     interaction = client.interactions.create(model=settings.gemini_model, input=prompt)
     return interaction.output_text
 
 
-def _call_anthropic(question: str, context: str) -> str:
+def _call_anthropic(question: str, context: str, lang: str) -> str:
     import anthropic
 
     if not settings.anthropic_api_key:
@@ -97,7 +113,7 @@ def _call_anthropic(question: str, context: str) -> str:
     response = client.messages.create(
         model="claude-opus-5",
         max_tokens=1024,
-        system=_SYSTEM_PROMPT,
+        system=_system_prompt_for(lang),
         messages=[{"role": "user", "content": f"Excerpts:\n\n{context}\n\nQuestion: {question}"}],
     )
     return response.content[0].text
@@ -106,20 +122,24 @@ def _call_anthropic(question: str, context: str) -> str:
 _CALLERS = {"glm": _call_glm, "gemini": _call_gemini, "anthropic": _call_anthropic}
 
 
-def ask(question: str, top_k: int = 5, where: dict | None = None) -> AnswerWithSources:
+def ask(question: str, top_k: int = 5, where: dict | None = None, lang: str = "de") -> AnswerWithSources:
     [query_vector] = embed_texts([question], task_type="RETRIEVAL_QUERY")
     hits = vector_store.query(query_vector, top_k=top_k, where=where)
     if not hits:
+        no_hits = {
+            "de": "Keine relevanten Textstellen im Index gefunden.",
+            "en": "No relevant excerpts found in the index.",
+        }
         return AnswerWithSources(
             question=question,
-            answer="Keine relevanten Textstellen im Index gefunden.",
+            answer=no_hits.get(lang, no_hits["de"]),
             sources=[],
             model_used="none",
         )
 
     context = _format_context(hits)
     caller = _CALLERS[settings.chat_provider]
-    answer_text = caller(question, context)
+    answer_text = caller(question, context, lang)
     model_label = {
         "glm": settings.glm_model,
         "gemini": settings.gemini_model,
