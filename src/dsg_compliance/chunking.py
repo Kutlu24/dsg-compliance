@@ -10,6 +10,7 @@ old (pre-revision) aDSG archive can never be presented as current law.
 """
 from __future__ import annotations
 
+import hashlib
 from datetime import date
 
 from pydantic import BaseModel
@@ -105,10 +106,16 @@ def chunk_decisions(decisions: list[Decision], max_chars: int = 1200, overlap: i
         if not d.full_text:
             continue
         pieces = _split_text(d.full_text, max_chars, overlap)
+        # Python's built-in hash() is salted per-process (PYTHONHASHSEED) -
+        # using it here would give every decision a different chunk_id on
+        # every ingestion run, breaking vector_store.upsert_chunks's
+        # id-based dedup (each re-run would insert new duplicates instead of
+        # updating the existing rows). hashlib is stable across runs/machines.
+        url_digest = hashlib.sha256(d.pdf_url.encode("utf-8")).hexdigest()[:16]
         for i, piece in enumerate(pieces):
             chunks.append(
                 Chunk(
-                    chunk_id=f"decision-{abs(hash(d.pdf_url))}-{i}",
+                    chunk_id=f"decision-{url_digest}-{i}",
                     text=piece,
                     source_type="decision",
                     source_title=d.title,
