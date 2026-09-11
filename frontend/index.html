@@ -374,16 +374,25 @@ function sourceBadge(lawVersion) {
   return `<span class="badge ${isOld ? 'badge-old' : 'badge-current'}">${label}</span>`;
 }
 
-const STOPWORDS = new Set([
+// Split by language rather than one mixed DE/EN set - source excerpts (the
+// statute/guidance text) are always German regardless of UI language (see
+// ingestion/fedlex.py, which fetches lang="de" only), but the question is
+// typed in whatever language the user is actually using, best approximated
+// by the active UI language toggle (`lang`). A single mixed set used to
+// mean a real content word in one language could get silently dropped just
+// because it happened to also be a function word in the other.
+const STOPWORDS_DE = new Set([
   "der","die","das","und","oder","ist","sind","ein","eine","einen","einer","dem","den","des",
   "von","zu","im","in","auf","für","mit","nicht","auch","sich","wird","werden","muss","kann",
+]);
+const STOPWORDS_EN = new Set([
   "the","and","or","is","are","a","an","of","to","in","for","that","this","how","what","when",
   "do","i","have","can","must","be","if","not","so","as","by","on","it","its",
 ]);
 
-function normWords(str) {
+function normWords(str, stopwords) {
   return str.toLowerCase().normalize("NFKD").replace(/[̀-ͯ]/g, "")
-    .split(/[^a-zäöüß0-9]+/i).filter(w => w.length > 3 && !STOPWORDS.has(w));
+    .split(/[^a-zäöüß0-9]+/i).filter(w => w.length > 3 && !stopwords.has(w));
 }
 
 // Highlights the sentence in `excerpt` with the most keyword overlap with
@@ -398,13 +407,15 @@ function normWords(str) {
 // the single most relevant excerpt (the actual deadline clause) entirely.
 function highlightExcerpt(excerpt, question) {
   const esc = (str) => str.replace(/</g, "&lt;");
-  const qWords = normWords(question);
+  const qWords = normWords(question, lang === "en" ? STOPWORDS_EN : STOPWORDS_DE);
   if (!qWords.length) return esc(excerpt);
 
   const sentences = excerpt.split(/(?<=[.!?])\s+(?=[A-ZÄÖÜ0-9])|\n+/);
   let bestIdx = -1, bestScore = 0;
   sentences.forEach((sent, i) => {
-    const words = normWords(sent);
+    // Excerpts are always the German source statute/guidance text
+    // (ingestion always fetches lang="de"), independent of the UI toggle.
+    const words = normWords(sent, STOPWORDS_DE);
     let score = 0;
     for (const w of words) {
       if (qWords.some(qw => w.includes(qw) || qw.includes(w))) score++;
