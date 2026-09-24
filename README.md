@@ -43,6 +43,14 @@ python -m dsg_compliance.cli ask "Wie lange darf ich fuer die Beantwortung eines
 
 On Render, `ingest` runs as part of `buildCommand` (see `render.yaml`) rather than being committed to the repo, so the vector store is rebuilt fresh on every deploy and a free-tier sleep/wake cycle never re-triggers it.
 
+## Checking answers are actually faithful to their citations
+
+`ask` always attaches a source list, but nothing previously checked whether the generated answer's claims actually match what those sources say — only a human reading both side by side. `python -m dsg_compliance.cli eval-faithfulness` (optionally with your own questions as arguments) runs a small set of representative questions through the real pipeline and scores each answer with [ragas](https://github.com/explodinggradients/ragas)'s `Faithfulness` metric: it breaks the answer into individual statements and checks each one against the retrieved excerpts. The judge is the same GLM model already used for answer generation — no second API key.
+
+Not the same thing as `analysis/citations.py`'s BGE citation graph (that's corpus-level, "who cites whom"); this is per-answer, "does this specific answer hold up against what it cites."
+
+Requires the `eval` extra: `pip install -e ".[eval]"` (pins `langchain-community==0.3.31` — see the extra's comment in `pyproject.toml` for why a newer version breaks `import ragas`). `tests/test_faithfulness.py` regression-tests the metric itself against a known-faithful and a known-fabricated example; skipped automatically without `GLM_API_KEY`.
+
 ## Status
 
 Working end to end: ingestion (79 DSG + 47 DSV articles, 4 current + 71 aDSG EDOEB decisions, 3138 chunks), Gemini-API embedding + Chroma storage, and a cited-answer chat layer (GLM by default - free tier, see `config.py` for why; swap to Gemini or Anthropic via `CHAT_PROVIDER` once available).

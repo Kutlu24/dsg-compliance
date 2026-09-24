@@ -2,6 +2,7 @@
     python -m dsg_compliance.cli ingest
     python -m dsg_compliance.cli ask "..."
     python -m dsg_compliance.cli build-citation-graph
+    python -m dsg_compliance.cli eval-faithfulness
 """
 from __future__ import annotations
 
@@ -175,6 +176,43 @@ def build_citation_graph_cmd(out: str | None):
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(graph.model_dump_json(indent=2), encoding="utf-8")
     click.echo(f"\nWritten to {out_path}")
+
+
+@cli.command("eval-faithfulness")
+@click.argument("questions", nargs=-1)
+@click.option("--top-k", default=5, type=int)
+@click.option("--threshold", default=0.8, type=float, help="Scores below this print as LOW.")
+def eval_faithfulness_cmd(questions: tuple[str, ...], top_k: int, threshold: float):
+    """Runs each question through ask() and scores whether the generated
+    answer's claims actually trace back to its cited sources, using ragas's
+    Faithfulness metric (see rag/faithfulness.py). Requires the `eval` extra
+    (`pip install -e ".[eval]"`) and GLM_API_KEY. Uses a small built-in set
+    of representative questions if none are given on the command line."""
+    import asyncio
+
+    from .rag.faithfulness import DEFAULT_EVAL_QUESTIONS, score_faithfulness
+
+    qs = list(questions) or DEFAULT_EVAL_QUESTIONS
+
+    async def run() -> None:
+        for q in qs:
+            try:
+                result = ask_question(q, top_k=top_k)
+                if not result.sources:
+                    click.echo(f"[NO SOURCES] {q}")
+                    continue
+                score = await score_faithfulness(result)
+            except Exception as e:
+                # Either the answer-generation call or the judge call can
+                # hit e.g. GLM's free-tier rate limit - that's a fact about
+                # this one question, not a reason to abort every other
+                # question already queued up.
+                click.echo(f"[ERROR] {q}\n        {type(e).__name__}: {e}")
+                continue
+            flag = "OK " if score >= threshold else "LOW"
+            click.echo(f"[{flag} {score:.2f}] {q}")
+
+    asyncio.run(run())
 
 
 if __name__ == "__main__":

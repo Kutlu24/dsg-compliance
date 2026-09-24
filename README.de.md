@@ -43,6 +43,14 @@ python -m dsg_compliance.cli ask "Wie lange darf ich fuer die Beantwortung eines
 
 Auf Render läuft `ingest` als Teil von `buildCommand` (siehe `render.yaml`), statt ins Repo committet zu werden — der Vektorspeicher wird so bei jedem Deploy frisch aufgebaut, und ein Schlaf-/Aufwach-Zyklus der kostenlosen Stufe löst ihn nie erneut aus.
 
+## Prüfen, ob Antworten wirklich zu ihren Zitaten passen
+
+`ask` liefert immer eine Quellenliste mit, aber bisher prüfte nichts automatisch, ob die generierte Antwort inhaltlich wirklich zu diesen Quellen passt — nur ein Mensch, der beides nebeneinander liest. `python -m dsg_compliance.cli eval-faithfulness` (optional mit eigenen Fragen als Argumente) lässt ein paar repräsentative Fragen durch die echte Pipeline laufen und bewertet jede Antwort mit [ragas](https://github.com/explodinggradients/ragas)s `Faithfulness`-Metrik: sie zerlegt die Antwort in einzelne Aussagen und prüft jede gegen die abgerufenen Textstellen. Der Richter ist dasselbe GLM-Modell, das schon für die Antwortgenerierung verwendet wird — kein zweiter API-Key nötig.
+
+Nicht dasselbe wie der BGE-Zitationsgraph in `analysis/citations.py` (das ist korpusweit, "wer zitiert wen"); dies hier ist pro Antwort, "hält diese konkrete Antwort dem stand, was sie zitiert."
+
+Benötigt das `eval`-Extra: `pip install -e ".[eval]"` (pinnt `langchain-community==0.3.31` — siehe der Kommentar zum Extra in `pyproject.toml`, warum eine neuere Version `import ragas` bricht). `tests/test_faithfulness.py` testet die Metrik selbst gegen ein bekannt-treues und ein bekannt-erfundenes Beispiel; wird ohne `GLM_API_KEY` automatisch übersprungen.
+
 ## Status
 
 Funktioniert Ende-zu-Ende: Ingestion (79 DSG- + 47 DSV-Artikel, 4 aktuelle + 71 aDSG-EDÖB-Entscheide, 3138 Chunks), Gemini-API-Embedding + Chroma-Speicherung, und eine zitierte Chat-Antwortebene (standardmässig GLM — kostenlose Stufe, siehe `config.py` für den Grund; umschaltbar auf Gemini oder Anthropic über `CHAT_PROVIDER`, sobald verfügbar).
