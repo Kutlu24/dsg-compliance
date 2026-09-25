@@ -8,8 +8,12 @@ services:
     # which a from-scratch ingest of this corpus (~3100 chunks) can't fit
     # in one day, and re-running it on every deploy would burn the day's
     # budget for no reason. data/chroma/ is committed instead - regenerate
-    # locally with `dsg_compliance.cli ingest --max-chunks N` and recommit
-    # if the source content changes.
+    # locally with `dsg_compliance.cli ingest --domain dsg --max-chunks N`
+    # (or `--domain dsa`) and recommit if the source content changes. Both
+    # domains' collections live in this one committed Chroma store (see
+    # domains/*/rag/vector_store.py's COLLECTION_NAME) - this used to be
+    # two separate Render services (dsg-compliance, dsa-compliance), merged
+    # into one since they're the same architecture over a different corpus.
     buildCommand: pip install -e .
     startCommand: uvicorn dsg_compliance.api.app:app --host 0.0.0.0 --port $PORT
     envVars:

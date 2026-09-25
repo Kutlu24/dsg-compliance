@@ -1,0 +1,73 @@
+# Ingestion sources for DSA Compliance.
+#
+# Every URL here was verified by direct HTTP fetch on 2026-09-09 before being
+# added - do not add a source URL without checking it resolves to real
+# content first (see docs/eurlex_reference.md for why eur-lex.europa.eu
+# itself can't be used directly).
+
+statute:
+  - id: dsa
+    title: "Regulation (EU) 2022/2065 on a Single Market For Digital Services (Digital Services Act)"
+    description: >
+      The Digital Services Act, in force since 17 February 2024 (full
+      application; entered into force 16.11.2022). Primary regulation text,
+      93 articles. Applies extraterritorially to any provider - including
+      Swiss ones - offering intermediary/hosting/platform services to
+      recipients in the EU (Art. 2(1)).
+    celex: "32022R2065"
+    langs: ["ENG", "DEU"]
+    url_display: "https://eur-lex.europa.eu/eli/reg/2022/2065/oj"
+
+guidance:
+  - id: ec-dsa-main
+    title: "The Digital Services Act (European Commission policy page)"
+    description: "Main European Commission policy overview page for the DSA."
+    url: "https://digital-strategy.ec.europa.eu/en/policies/digital-services-act"
+
+  - id: ec-dsa-faq
+    title: "Digital Services Act: Questions and Answers"
+    description: >
+      European Commission's official FAQ - scope, obligations by provider
+      category, VLOP/VLOSE designation thresholds, enforcement.
+    url: "https://digital-strategy.ec.europa.eu/en/faqs/digital-services-act-questions-and-answers"
+
+  - id: ec-dsa-impact-platforms
+    title: "The impact of the Digital Services Act on digital platforms"
+    description: >
+      Commission guidance for Very Large Online Platforms/Search Engines
+      (VLOPs/VLOSEs): risk-mitigation obligations, published guidelines
+      (e.g. on electoral processes, minor protection).
+    url: "https://digital-strategy.ec.europa.eu/en/policies/dsa-impact-platforms"
+
+swiss_relevance:
+  # Bär & Karrer's page and PwC Switzerland's page were both tried first but
+  # dropped 2026-09-09: Bär & Karrer's is a bare speaking-engagement listing
+  # (~1.1k chars, no real analysis text), and PwC's page's actual content
+  # isn't reachable by generic <main>/<article> extraction (the largest
+  # <article> on that page is an unrelated teaser, not the DSA content) -
+  # see ingestion/guidance.py's docstring. These two Swiss Infosec AG pages
+  # verified with substantial real extracted text (5-6.5k chars each).
+  - id: infosec-dsa-service
+    title: "EU Digital Services Act (DSA) - Swiss Infosec AG"
+    description: >
+      Swiss Infosec's current DSA advisory service page - explains DSA
+      applicability to Swiss companies operating online platforms or
+      offering digital services to EU users.
+    url: "https://www.infosec.ch/beratung/datenschutz/eu-digital-services-act-dsa/"
+
+  - id: infosec-dsa-swiss
+    title: "Der EU Digital Services Act ist in der Pipeline - besteht auch für Schweizer Unternehmen Handlungsbedarf?"
+    description: >
+      Swiss Infosec's background article on the DSA's origins and why it
+      reaches Swiss-domiciled online-platform/intermediary providers.
+    url: "https://www.infosec.ch/blog/der-eu-digital-services-act-ist-in-der-pipeline-besteht-auch-fuer-schweizer-unternehmen-handlungsbedarf/"
+
+# Not yet sourced (real gaps to fill before this is useful for researchers):
+# - Delegated/implementing acts and adopted Commission guidelines (e.g. the
+#   Article 35 risk-mitigation guidelines, trusted-flagger guidelines once
+#   finalized - draft as of 2026-07, see ec-dsa-impact-platforms).
+# - Board for Digital Services decisions/opinions, once that body has a
+#   public decision archive comparable to EDOEB's (DSG Compliance's model).
+# - A Swiss-specific regulator/coordinator contact point, if one is ever
+#   designated for cross-border DSA matters (none exists as of 2026-09 -
+#   Switzerland is not an EU/EEA member and has no DSC).

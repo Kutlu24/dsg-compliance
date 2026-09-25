@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Swiss DSG Compliance Assistant</title>
+<title>Swiss Compliance Assistant</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
@@ -12,16 +12,25 @@
     --bg: #f3f4f8; --surface: #fff; --border: #e2e5ec; --text: #181c2a;
     --text2: #5b6172; --text3: #8e92a3;
     --accent: #d8232a; --accent-dark: #a5121b; --accent-soft: #fdecec;
+    --gold: #ffcc00; --gold-soft: #fff8e0;
     --ok: #16a34a; --ok-soft: #e3f8ea; --old: #b45309; --old-soft: #fef3c7;
     --shadow: 0 1px 2px rgba(24,28,42,.04), 0 8px 24px -12px rgba(24,28,42,.10);
     --shadow-sm: 0 1px 2px rgba(24,28,42,.06);
     --font-display: "Fraunces", Georgia, serif;
     --font-body: Arial, "Helvetica Neue", Helvetica, sans-serif;
   }
+  /* DSA (EU Digital Services Act) uses the EU's own blue/gold instead of
+     DSG's Swiss red - a visual cue for which knowledge base is active,
+     not just the text label, since the two are genuinely different legal
+     domains with different source corpora. */
+  body.domain-dsa {
+    --accent: #003399; --accent-dark: #001f5c; --accent-soft: #e8edfb;
+  }
   * { box-sizing: border-box; }
   body {
     font-family: var(--font-body); font-size: 17px; background: var(--bg); color: var(--text); margin: 0; line-height: 1.55;
     background-image: radial-gradient(1100px 420px at 50% -180px, rgba(216,35,42,.06), transparent 70%);
+    transition: background-color .2s;
   }
   .topbar { height: 5px; background: linear-gradient(90deg, var(--accent), var(--accent-dark)); }
   .layout {
@@ -67,6 +76,7 @@
   .brand-mark {
     flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; background: var(--accent);
     display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm);
+    transition: background-color .2s;
   }
   .brand-mark svg { width: 20px; height: 20px; }
   h1 {
@@ -78,9 +88,10 @@
     color: var(--accent-dark); margin: 0 0 10px;
   }
   .subtitle { color: var(--text2); margin: 0; max-width: 560px; font-size: 1.02rem; }
-  .lang-toggle { display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 3px; box-shadow: var(--shadow-sm); }
-  .lang-toggle button { background: transparent; border: none; padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; color: var(--text2); font-family: inherit; }
-  .lang-toggle button.active { background: var(--accent); color: #fff; }
+  .toggles { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+  .lang-toggle, .domain-toggle { display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 3px; box-shadow: var(--shadow-sm); }
+  .lang-toggle button, .domain-toggle button { background: transparent; border: none; padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; color: var(--text2); font-family: inherit; }
+  .lang-toggle button.active, .domain-toggle button.active { background: var(--accent); color: #fff; }
   .model-badge {
     display: inline-flex; align-items: center; gap: 7px; font-size: 0.76rem; color: var(--text2);
     background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 5px 14px;
@@ -103,11 +114,16 @@
   button.ask:active { transform: translateY(1px); }
   button.ask:disabled { background: #c7cad4; cursor: not-allowed; box-shadow: none; }
   .status { font-size: 0.85rem; color: var(--text2); margin-top: 10px; min-height: 1.2em; }
+  .domain-label {
+    font-family: var(--font-display); font-weight: 600; font-size: 0.85rem; letter-spacing: 0.02em;
+    color: var(--accent-dark); text-transform: uppercase; margin: 0 0 -4px;
+  }
   .answer-card {
     background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 26px;
-    box-shadow: var(--shadow); border-top: 3px solid var(--accent);
+    box-shadow: var(--shadow); border-top: 3px solid var(--accent); margin-bottom: 20px;
     animation: rise .35s ease-out;
   }
+  .answer-card:last-child { margin-bottom: 0; }
   @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) { .answer-card { animation: none; } }
   .answer-text { white-space: pre-wrap; font-size: 1.08rem; margin-bottom: 22px; }
@@ -126,12 +142,16 @@
   .badge { flex-shrink: 0; font-size: 0.66rem; font-weight: 700; padding: 3px 9px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 1px; }
   .badge-current { background: var(--ok-soft); color: var(--ok); }
   .badge-old { background: var(--old-soft); color: var(--old); }
+  .badge-statute { background: var(--accent-soft); color: var(--accent-dark); }
+  .badge-guidance { background: var(--gold-soft); color: #8a6d00; }
   .source-item a { color: var(--text); text-decoration: none; font-weight: 600; }
   .source-item a:hover { color: var(--accent); text-decoration: underline; }
   .disclaimer { font-size: 0.78rem; color: var(--text3); font-style: italic; margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--border); }
   @media (max-width: 560px) {
     .wrap { padding: 28px 18px 40px; }
     h1 { font-size: 1.5rem; }
+    .top-row { flex-direction: column; }
+    .toggles { align-items: flex-start; }
   }
 </style>
 </head>
@@ -157,7 +177,7 @@
 <div class="wrap">
   <div class="top-row">
     <div class="brand">
-      <div class="brand-mark">
+      <div class="brand-mark" id="brandMark">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M11 2 3 6v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V6l-8-4Z" fill="#fff" fill-opacity=".18"/>
           <path d="M11 2 3 6v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V6l-8-4Z" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/>
@@ -165,14 +185,21 @@
         </svg>
       </div>
       <div>
-        <h1>Swiss DSG Compliance Assistant</h1>
+        <h1 id="pageTitle"></h1>
         <p class="tagline" id="tagline"></p>
         <p class="subtitle" id="subtitle"></p>
       </div>
     </div>
-    <div class="lang-toggle">
-      <button id="btnDe" onclick="setLang('de')">DE</button>
-      <button id="btnEn" onclick="setLang('en')">EN</button>
+    <div class="toggles">
+      <div class="domain-toggle">
+        <button id="btnDsg" onclick="setDomain('dsg')">DSG</button>
+        <button id="btnDsa" onclick="setDomain('dsa')">DSA</button>
+        <button id="btnBoth" onclick="setDomain('both')">+</button>
+      </div>
+      <div class="lang-toggle">
+        <button id="btnDe" onclick="setLang('de')">DE</button>
+        <button id="btnEn" onclick="setLang('en')">EN</button>
+      </div>
     </div>
   </div>
 
@@ -198,70 +225,159 @@
 <script>
 const API = "";
 
+// Two independent legal-compliance domains sharing one page/deployment -
+// DSG (Swiss data protection) and DSA (EU Digital Services Act). Each has
+// its own STRINGS[domain][lang] copy (tagline/placeholder/etc differ, and
+// DSG has extra fields - current/old law badges, the citation-graph side
+// panels - that DSA has no equivalent of, since DSA has no EDOEB-style
+// published-decision archive). "both" is not a third backend domain - it
+// fires one /ask per real domain in parallel and shows both answers
+// stacked, each still using its own domain's citation format; this
+// deliberately avoids blending the two domains' retrieval into one answer
+// (cross-domain retrieval risks citing the wrong regulation for a given
+// claim - see the merge discussion this came from).
 const STRINGS = {
+  dsg: {
+    de: {
+      pageTitle: "Swiss DSG Compliance Assistant",
+      tagline: "Datenschutz mit Schweizer Präzision.",
+      subtitle: "Stellen Sie eine Frage zum Schweizer Datenschutzgesetz (DSG). Jede Antwort ist mit Quellenangaben aus dem Gesetzestext (DSG/DSV) und EDÖB-Entscheiden belegt.",
+      questionLabel: "Ihre Frage",
+      placeholder: "z. B. \"Wie lange darf ich für die Beantwortung eines Auskunftsgesuchs brauchen?\"",
+      ask: "Fragen",
+      asking: "Wird beantwortet...",
+      sources: "Quellen",
+      showExcerpt: "Textstelle anzeigen",
+      disclaimer: "Dies ist eine Informationshilfe, keine Rechtsberatung. Für eine verbindliche Einschätzung konsultieren Sie eine Anwältin/einen Anwalt oder direkt den EDÖB.",
+      model: "Aktives KI-Modell",
+      current: "aktuell",
+      old: "altes Recht",
+      error: "Fehler: ",
+      timelineTitle: "Entscheid-Zeitachse",
+      timelineSub: "EDÖB-Entscheide pro Jahr",
+      legendCurrent: "aktuelles Recht",
+      legendOld: "altes Recht (aDSG)",
+      fullReportText: "Vollständiger Bericht →",
+      fullReportUrl: "https://claude.ai/code/artifact/ed1966bb-b0b4-4a28-b082-e65fcf8fab5d",
+      exportLabel: "Export:",
+      precedentsTitle: "Meistzitierte Präjudizien",
+      precedentsSub: "BGE-Urteile, auf die sich EDÖB-Entscheide stützen",
+      precedentCitedBy: n => `zitiert von ${n} Entscheid${n === 1 ? "" : "en"}`,
+      loading: "Lädt...",
+    },
+    en: {
+      pageTitle: "Swiss DSG Compliance Assistant",
+      tagline: "Data protection, Swiss precision.",
+      subtitle: "Ask a question about the Swiss Federal Data Protection Act (DSG). Every answer is grounded in citations from the statute text (DSG/DSV) and FDPIC decisions.",
+      questionLabel: "Your question",
+      placeholder: "e.g. \"How long do I have to respond to an access request?\"",
+      ask: "Ask",
+      asking: "Thinking...",
+      sources: "Sources",
+      showExcerpt: "Show excerpt",
+      disclaimer: "This is an informational aid, not legal advice. For a binding assessment, consult a lawyer or the FDPIC directly.",
+      model: "Active AI model",
+      current: "current",
+      old: "old law",
+      error: "Error: ",
+      timelineTitle: "Decision timeline",
+      timelineSub: "EDÖB decisions per year",
+      legendCurrent: "current law",
+      legendOld: "old law (aDSG)",
+      fullReportText: "Full report →",
+      fullReportUrl: "https://claude.ai/code/artifact/8a758157-ad5f-4550-8aa1-e99f7b80db3b",
+      exportLabel: "Export:",
+      precedentsTitle: "Most-cited precedents",
+      precedentsSub: "Federal Court (BGE) rulings EDÖB decisions rely on",
+      precedentCitedBy: n => `cited by ${n} decision${n === 1 ? "" : "s"}`,
+      loading: "Loading...",
+    },
+  },
+  dsa: {
+    de: {
+      pageTitle: "DSA Compliance Assistant",
+      tagline: "Betrifft der DSA Ihr Unternehmen?",
+      subtitle: "Stellen Sie eine Frage zum EU Digital Services Act (DSA). Jede Antwort ist mit Quellenangaben aus dem Verordnungstext sowie EU-Kommissions- und Schweiz-Hinweisen belegt.",
+      questionLabel: "Ihre Frage",
+      placeholder: "z. B. \"Wir sind ein Schweizer Unternehmen ohne EU-Niederlassung - gilt der DSA trotzdem für uns?\"",
+      ask: "Fragen",
+      asking: "Wird beantwortet...",
+      sources: "Quellen",
+      showExcerpt: "Textstelle anzeigen",
+      disclaimer: "Dies ist eine Informationshilfe, keine Rechtsberatung. Für eine verbindliche Einschätzung konsultieren Sie eine Anwältin/einen Anwalt.",
+      model: "Aktives KI-Modell",
+      error: "Fehler: ",
+      statute: "DSA",
+      guidance: "Leitfaden",
+    },
+    en: {
+      pageTitle: "DSA Compliance Assistant",
+      tagline: "Does the DSA reach your business?",
+      subtitle: "Ask a question about the EU Digital Services Act. Every answer is grounded in citations from the regulation text and European Commission / Swiss-relevance guidance.",
+      questionLabel: "Your question",
+      placeholder: "e.g. \"We're a Swiss company with no EU office - can the DSA still apply to us?\"",
+      ask: "Ask",
+      asking: "Thinking...",
+      sources: "Sources",
+      showExcerpt: "Show excerpt",
+      disclaimer: "This is an informational aid, not legal advice. For a binding assessment, consult a lawyer.",
+      model: "Active AI model",
+      error: "Error: ",
+      statute: "DSA",
+      guidance: "Guidance",
+    },
+  },
+};
+
+// Header-only copy for "both" mode - not a third domain, just what the
+// header shows while the question actually goes to both real domains.
+const BOTH_STRINGS = {
   de: {
-    tagline: "Datenschutz mit Schweizer Präzision.",
-    subtitle: "Stellen Sie eine Frage zum Schweizer Datenschutzgesetz (DSG). Jede Antwort ist mit Quellenangaben aus dem Gesetzestext (DSG/DSV) und EDÖB-Entscheiden belegt.",
+    pageTitle: "Swiss Compliance Assistant",
+    tagline: "Eine Frage, zwei Wissensbasen.",
+    subtitle: "Ihre Frage wird gleichzeitig an DSG und DSA gestellt - jede Antwort erscheint einzeln, mit ihren eigenen Quellenangaben.",
     questionLabel: "Ihre Frage",
-    placeholder: "z. B. \"Wie lange darf ich für die Beantwortung eines Auskunftsgesuchs brauchen?\"",
-    ask: "Fragen",
+    placeholder: "z. B. \"Gilt das auch für ein Schweizer Unternehmen ohne EU-Niederlassung, das Personendaten verarbeitet?\"",
+    ask: "Beide fragen",
     asking: "Wird beantwortet...",
-    sources: "Quellen",
-    showExcerpt: "Textstelle anzeigen",
-    disclaimer: "Dies ist eine Informationshilfe, keine Rechtsberatung. Für eine verbindliche Einschätzung konsultieren Sie eine Anwältin/einen Anwalt oder direkt den EDÖB.",
-    model: "Aktives KI-Modell",
-    current: "aktuell",
-    old: "altes Recht",
     error: "Fehler: ",
-    timelineTitle: "Entscheid-Zeitachse",
-    timelineSub: "EDÖB-Entscheide pro Jahr",
-    legendCurrent: "aktuelles Recht",
-    legendOld: "altes Recht (aDSG)",
-    fullReportText: "Vollständiger Bericht →",
-    fullReportUrl: "https://claude.ai/code/artifact/ed1966bb-b0b4-4a28-b082-e65fcf8fab5d",
-    exportLabel: "Export:",
-    precedentsTitle: "Meistzitierte Präjudizien",
-    precedentsSub: "BGE-Urteile, auf die sich EDÖB-Entscheide stützen",
-    precedentCitedBy: n => `zitiert von ${n} Entscheid${n === 1 ? "" : "en"}`,
-    loading: "Lädt...",
   },
   en: {
-    tagline: "Data protection, Swiss precision.",
-    subtitle: "Ask a question about the Swiss Federal Data Protection Act (DSG). Every answer is grounded in citations from the statute text (DSG/DSV) and FDPIC decisions.",
+    pageTitle: "Swiss Compliance Assistant",
+    tagline: "One question, two knowledge bases.",
+    subtitle: "Your question is sent to DSG and DSA at once - each answer appears separately, with its own citations.",
     questionLabel: "Your question",
-    placeholder: "e.g. \"How long do I have to respond to an access request?\"",
-    ask: "Ask",
+    placeholder: "e.g. \"Does this also apply to a Swiss company with no EU office that processes personal data?\"",
+    ask: "Ask both",
     asking: "Thinking...",
-    sources: "Sources",
-    showExcerpt: "Show excerpt",
-    disclaimer: "This is an informational aid, not legal advice. For a binding assessment, consult a lawyer or the FDPIC directly.",
-    model: "Active AI model",
-    current: "current",
-    old: "old law",
     error: "Error: ",
-    timelineTitle: "Decision timeline",
-    timelineSub: "EDÖB decisions per year",
-    legendCurrent: "current law",
-    legendOld: "old law (aDSG)",
-    fullReportText: "Full report →",
-    fullReportUrl: "https://claude.ai/code/artifact/8a758157-ad5f-4550-8aa1-e99f7b80db3b",
-    exportLabel: "Export:",
-    precedentsTitle: "Most-cited precedents",
-    precedentsSub: "Federal Court (BGE) rulings EDÖB decisions rely on",
-    precedentCitedBy: n => `cited by ${n} decision${n === 1 ? "" : "s"}`,
-    loading: "Loading...",
   },
 };
 
 let citationGraph = null;
-
 let lang = "de";
+let domain = "dsg";
 let lastConfig = null;
+
+function activeStrings() {
+  return domain === "both" ? BOTH_STRINGS[lang] : STRINGS[domain][lang];
+}
 
 function renderModelBadge() {
   if (!lastConfig) return;
   document.getElementById("modelBadge").innerHTML =
-    `<span class="dot"></span> ${STRINGS[lang].model}: ${lastConfig.provider} / ${lastConfig.model}`;
+    `<span class="dot"></span> ${activeStrings().model || STRINGS.dsg[lang].model}: ${lastConfig.provider} / ${lastConfig.model}`;
+}
+
+function renderHeader() {
+  const s = activeStrings();
+  document.getElementById("pageTitle").textContent = s.pageTitle;
+  document.getElementById("tagline").textContent = s.tagline;
+  document.getElementById("subtitle").textContent = s.subtitle;
+  document.getElementById("questionLabel").textContent = s.questionLabel;
+  document.getElementById("question").placeholder = s.placeholder;
+  document.getElementById("askBtn").textContent = s.ask;
+  renderModelBadge();
 }
 
 function setLang(l) {
@@ -269,29 +385,39 @@ function setLang(l) {
   document.getElementById("btnDe").classList.toggle("active", l === "de");
   document.getElementById("btnEn").classList.toggle("active", l === "en");
   document.documentElement.lang = l;
-  const s = STRINGS[l];
-  document.getElementById("tagline").textContent = s.tagline;
-  document.getElementById("subtitle").textContent = s.subtitle;
-  document.getElementById("questionLabel").textContent = s.questionLabel;
-  document.getElementById("question").placeholder = s.placeholder;
-  document.getElementById("askBtn").textContent = s.ask;
-  document.getElementById("timelineTitle").textContent = s.timelineTitle;
-  document.getElementById("timelineSub").textContent = s.timelineSub;
-  document.getElementById("legendCurrent").textContent = s.legendCurrent;
-  document.getElementById("legendOld").textContent = s.legendOld;
-  document.getElementById("fullReportLink").textContent = s.fullReportText;
-  document.getElementById("fullReportLink").href = s.fullReportUrl;
-  document.getElementById("exportLabel").textContent = s.exportLabel;
-  document.getElementById("precedentsTitle").textContent = s.precedentsTitle;
-  document.getElementById("precedentsSub").textContent = s.precedentsSub;
-  renderModelBadge();
+  const dsgS = STRINGS.dsg[l];
+  document.getElementById("timelineTitle").textContent = dsgS.timelineTitle;
+  document.getElementById("timelineSub").textContent = dsgS.timelineSub;
+  document.getElementById("legendCurrent").textContent = dsgS.legendCurrent;
+  document.getElementById("legendOld").textContent = dsgS.legendOld;
+  document.getElementById("fullReportLink").textContent = dsgS.fullReportText;
+  document.getElementById("fullReportLink").href = dsgS.fullReportUrl;
+  document.getElementById("exportLabel").textContent = dsgS.exportLabel;
+  document.getElementById("precedentsTitle").textContent = dsgS.precedentsTitle;
+  document.getElementById("precedentsSub").textContent = dsgS.precedentsSub;
+  renderHeader();
   renderTimeline();
   renderPrecedents();
 }
 
+function setDomain(d) {
+  domain = d;
+  document.getElementById("btnDsg").classList.toggle("active", d === "dsg");
+  document.getElementById("btnDsa").classList.toggle("active", d === "dsa");
+  document.getElementById("btnBoth").classList.toggle("active", d === "both");
+  document.body.classList.toggle("domain-dsa", d === "dsa");
+  // The citation-graph side panels are DSG-only data (no DSA equivalent) -
+  // hidden outright for a pure DSA question, but kept for "both" since
+  // that still includes a DSG answer.
+  const showDsgPanels = d !== "dsa";
+  document.getElementById("sideLeft").style.display = showDsgPanels ? "" : "none";
+  document.getElementById("sideRight").style.display = showDsgPanels ? "" : "none";
+  renderHeader();
+}
+
 function renderTimeline() {
   const body = document.getElementById("timelineBody");
-  if (!citationGraph) { body.innerHTML = `<p class="empty">${STRINGS[lang].loading}</p>`; return; }
+  if (!citationGraph) { body.innerHTML = `<p class="empty">${STRINGS.dsg[lang].loading}</p>`; return; }
   const byYear = {};
   for (const d of citationGraph.decisions) {
     if (!d.publication_date) continue;
@@ -329,12 +455,12 @@ function bgeLink(citation) {
 
 function renderPrecedents() {
   const body = document.getElementById("precedentsBody");
-  if (!citationGraph) { body.innerHTML = `<p class="empty">${STRINGS[lang].loading}</p>`; return; }
+  if (!citationGraph) { body.innerHTML = `<p class="empty">${STRINGS.dsg[lang].loading}</p>`; return; }
   const entries = Object.entries(citationGraph.bge_frequency).sort((a, b) => b[1] - a[1]).slice(0, 10);
   if (!entries.length) { body.innerHTML = `<p class="empty">-</p>`; return; }
   const maxN = entries[0][1];
   body.innerHTML = entries.map(([name, n]) => `
-    <a class="prec-row" href="${bgeLink(name)}" target="_blank" rel="noopener" title="${STRINGS[lang].precedentCitedBy(n)}">
+    <a class="prec-row" href="${bgeLink(name)}" target="_blank" rel="noopener" title="${STRINGS.dsg[lang].precedentCitedBy(n)}">
       <div class="prec-name"><span>${name}</span><span class="prec-count">${n}</span></div>
       <div class="prec-bar-track"><div class="prec-bar-fill" style="width:${(n / maxN) * 100}%"></div></div>
     </a>`).join("");
@@ -368,26 +494,16 @@ async function loadConfig() {
   }
 }
 
-function sourceBadge(lawVersion) {
-  const isOld = lawVersion.toLowerCase().startsWith("adsg");
-  const label = isOld ? STRINGS[lang].old : STRINGS[lang].current;
-  return `<span class="badge ${isOld ? 'badge-old' : 'badge-current'}">${label}</span>`;
-}
-
-// Split by language rather than one mixed DE/EN set - source excerpts (the
-// statute/guidance text) are always German regardless of UI language (see
-// ingestion/fedlex.py, which fetches lang="de" only), but the question is
-// typed in whatever language the user is actually using, best approximated
-// by the active UI language toggle (`lang`). A single mixed set used to
-// mean a real content word in one language could get silently dropped just
-// because it happened to also be a function word in the other.
+// Split by language rather than one mixed DE/EN set - a real content word
+// in one language could get silently dropped just because it happened to
+// also be a function word in the other.
 const STOPWORDS_DE = new Set([
   "der","die","das","und","oder","ist","sind","ein","eine","einen","einer","dem","den","des",
   "von","zu","im","in","auf","für","mit","nicht","auch","sich","wird","werden","muss","kann",
 ]);
 const STOPWORDS_EN = new Set([
   "the","and","or","is","are","a","an","of","to","in","for","that","this","how","what","when",
-  "do","i","have","can","must","be","if","not","so","as","by","on","it","its",
+  "do","i","have","can","must","be","if","not","so","as","by","on","it","its","we","our",
 ]);
 
 function normWords(str, stopwords) {
@@ -398,24 +514,24 @@ function normWords(str, stopwords) {
 // Highlights the sentence in `excerpt` with the most keyword overlap with
 // `question` - a cheap client-side heuristic (no re-ranking call to the
 // LLM/embedding API) to point the reader at the specific clause worth
-// reading, addressing feedback that a long excerpt still buries the point.
-//
-// Matching is substring-based (word A "hits" word B if either contains the
-// other), not exact-token equality: German compounding means the question's
+// reading. `excerptLang` is the SOURCE corpus's actual language (DSG's
+// ingestion always fetches German; DSA's always fetches English) -
+// independent of the UI's `lang` toggle, which only decides what language
+// the *question* and the generated *answer* are in. Matching is
+// substring-based (word A "hits" word B if either contains the other),
+// not exact-token equality: German compounding means the question's
 // "Auskunftsgesuchs" and the statute's plain "Auskunft" are the same match
-// a reader would make, but share zero exact tokens - exact matching missed
-// the single most relevant excerpt (the actual deadline clause) entirely.
-function highlightExcerpt(excerpt, question) {
+// a reader would make, but share zero exact tokens.
+function highlightExcerpt(excerpt, question, excerptLang) {
   const esc = (str) => str.replace(/</g, "&lt;");
   const qWords = normWords(question, lang === "en" ? STOPWORDS_EN : STOPWORDS_DE);
   if (!qWords.length) return esc(excerpt);
 
   const sentences = excerpt.split(/(?<=[.!?])\s+(?=[A-ZÄÖÜ0-9])|\n+/);
+  const excerptStopwords = excerptLang === "en" ? STOPWORDS_EN : STOPWORDS_DE;
   let bestIdx = -1, bestScore = 0;
   sentences.forEach((sent, i) => {
-    // Excerpts are always the German source statute/guidance text
-    // (ingestion always fetches lang="de"), independent of the UI toggle.
-    const words = normWords(sent, STOPWORDS_DE);
+    const words = normWords(sent, excerptStopwords);
     let score = 0;
     for (const w of words) {
       if (qWords.some(qw => w.includes(qw) || qw.includes(w))) score++;
@@ -426,10 +542,62 @@ function highlightExcerpt(excerpt, question) {
   return sentences.map((sent, i) => i === bestIdx ? `<mark class="hl">${esc(sent)}</mark>` : esc(sent)).join(" ");
 }
 
+function sourceBadgeDsg(lawVersion, s) {
+  const isOld = lawVersion.toLowerCase().startsWith("adsg");
+  const label = isOld ? s.old : s.current;
+  return `<span class="badge ${isOld ? 'badge-old' : 'badge-current'}">${label}</span>`;
+}
+
+function sourceBadgeDsa(label, s) {
+  const isStatute = /^Article \d/.test(label);
+  return `<span class="badge ${isStatute ? 'badge-statute' : 'badge-guidance'}">${isStatute ? s.statute : s.guidance}</span>`;
+}
+
+// Renders one domain's answer as a standalone card (used directly for a
+// single-domain question, and twice - once per domain - for "both").
+// `question` is passed through for highlightExcerpt rather than re-read
+// from the textarea, so a "both" render always highlights against the
+// exact question that was actually sent.
+function renderAnswerCard(d, data, question, showDomainLabel) {
+  const s = STRINGS[d][lang];
+  const excerptLang = d === "dsg" ? "de" : "en";
+  const sourcesHtml = data.sources.map(src => `
+    <div class="source-item">
+      <div class="source-item-head">
+        ${d === "dsg" ? sourceBadgeDsg(src.law_version, s) : sourceBadgeDsa(src.label, s)}
+        <a href="${src.source_url}" target="_blank" rel="noopener">${src.label}</a>
+      </div>
+      <details class="source-excerpt">
+        <summary>${s.showExcerpt}</summary>
+        <div class="excerpt-text">${highlightExcerpt(src.excerpt, question, excerptLang)}</div>
+      </details>
+    </div>`).join("");
+  return `
+    <div class="answer-card">
+      ${showDomainLabel ? `<p class="domain-label">${d.toUpperCase()}</p>` : ""}
+      <div class="answer-text">${data.answer.replace(/</g, "&lt;")}</div>
+      <div class="sources">
+        <h3>${s.sources}</h3>
+        ${sourcesHtml}
+      </div>
+      <div class="disclaimer">${s.disclaimer}</div>
+    </div>`;
+}
+
+async function askOne(domainName, question) {
+  const res = await fetch(`${API}/ask`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ question, lang, domain: domainName }),
+  });
+  if (!res.ok) throw new Error(await errorText(res));
+  return res.json();
+}
+
 async function ask() {
   const question = document.getElementById("question").value.trim();
   if (!question) return;
-  const s = STRINGS[lang];
+  const s = activeStrings();
   const statusEl = document.getElementById("status");
   const btn = document.getElementById("askBtn");
   btn.disabled = true;
@@ -437,42 +605,32 @@ async function ask() {
   document.getElementById("result").innerHTML = "";
 
   try {
-    const res = await fetch(`${API}/ask`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ question, lang }),
-    });
-    if (!res.ok) {
-      statusEl.textContent = s.error + await errorText(res);
-      return;
+    if (domain === "both") {
+      const [dsgResult, dsaResult] = await Promise.all([
+        askOne("dsg", question).catch(e => ({ error: e.message })),
+        askOne("dsa", question).catch(e => ({ error: e.message })),
+      ]);
+      statusEl.textContent = "";
+      const dsgHtml = dsgResult.error
+        ? `<div class="answer-card"><p class="domain-label">DSG</p><div class="answer-text">${s.error}${dsgResult.error}</div></div>`
+        : renderAnswerCard("dsg", dsgResult, question, true);
+      const dsaHtml = dsaResult.error
+        ? `<div class="answer-card"><p class="domain-label">DSA</p><div class="answer-text">${s.error}${dsaResult.error}</div></div>`
+        : renderAnswerCard("dsa", dsaResult, question, true);
+      document.getElementById("result").innerHTML = dsgHtml + dsaHtml;
+    } else {
+      const data = await askOne(domain, question);
+      statusEl.textContent = "";
+      document.getElementById("result").innerHTML = renderAnswerCard(domain, data, question, false);
     }
-    const data = await res.json();
-    statusEl.textContent = "";
-    const sourcesHtml = data.sources.map(src => `
-      <div class="source-item">
-        <div class="source-item-head">
-          ${sourceBadge(src.law_version)}
-          <a href="${src.source_url}" target="_blank" rel="noopener">${src.label}</a>
-        </div>
-        <details class="source-excerpt">
-          <summary>${s.showExcerpt}</summary>
-          <div class="excerpt-text">${highlightExcerpt(src.excerpt, question)}</div>
-        </details>
-      </div>`).join("");
-    document.getElementById("result").innerHTML = `
-      <div class="answer-card">
-        <div class="answer-text">${data.answer.replace(/</g, "&lt;")}</div>
-        <div class="sources">
-          <h3>${s.sources}</h3>
-          ${sourcesHtml}
-        </div>
-        <div class="disclaimer">${s.disclaimer}</div>
-      </div>`;
+  } catch (e) {
+    statusEl.textContent = s.error + e.message;
   } finally {
     btn.disabled = false;
   }
 }
 
+setDomain("dsg");
 setLang("de");
 loadConfig();
 loadCitationGraph();

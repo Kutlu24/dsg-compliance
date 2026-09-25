@@ -1,9 +1,15 @@
-"""FastAPI backend for the DSG Compliance web UI. Run with:
+"""FastAPI backend for the Swiss Compliance Assistant - DSG (Swiss data
+protection) and DSA (EU Digital Services Act) share this one app/deployment
+rather than two, since they share the exact same RAG architecture (see
+domains/dsg/ and domains/dsa/, and cli.py's module docstring for why the
+two domains still keep separate chunking/rag modules rather than a forced
+common schema). Run with:
     uvicorn dsg_compliance.api.app:app --reload
 
 Endpoints:
-    POST /ask     {question, top_k?} -> AnswerWithSources (see rag/chat.py)
-    GET  /config  -> {provider, model} - which LLM is actually answering
+    POST /ask             {question, domain, top_k?, lang?} -> AnswerWithSources
+    GET  /config          -> {provider, model} - which LLM is actually answering
+    GET  /citation-graph  -> dsg only, see domains/dsg/analysis/citations.py
 """
 from __future__ import annotations
 
@@ -11,6 +17,7 @@ import csv
 import io
 import json
 from pathlib import Path
+from typing import Literal
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -19,10 +26,9 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from ..config import data_dir, settings
-from ..rag.chat import AnswerWithSources, ask as ask_question
 from .errors import friendly_llm_error
 
-app = FastAPI(title="DSG Compliance Assistant")
+app = FastAPI(title="Swiss Compliance Assistant (DSG + DSA)")
 app.add_middleware(
     CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"]
 )
@@ -52,6 +58,9 @@ _MODEL_BY_PROVIDER = {
 
 @app.get("/config", response_model=ConfigInfo)
 def get_config() -> ConfigInfo:
+    # One chat_provider/model setting for both domains - they were already
+    # sharing the same GLM/Gemini keys and free-tier quota before the
+    # merge, so there is nothing domain-specific to report here.
     return ConfigInfo(
         provider=settings.chat_provider,
         model=_MODEL_BY_PROVIDER[settings.chat_provider](),
@@ -67,17 +76,16 @@ def _load_citation_graph() -> dict:
 
 @app.get("/citation-graph")
 def get_citation_graph():
-    """Serves the pre-built EDOEB-decision -> BGE-precedent citation graph
-    (see analysis/citations.py and cli.py's build-citation-graph command
-    for how it's generated - not computed on request)."""
+    """dsg only - serves the pre-built EDOEB-decision -> BGE-precedent
+    citation graph (see domains/dsg/analysis/citations.py and cli.py's
+    build-citation-graph command for how it's generated). DSA has no
+    equivalent published-decision archive, so there is no DSA version of
+    this endpoint."""
     return _load_citation_graph()
 
 
 @app.get("/export/decisions.json", include_in_schema=False)
 def export_decisions_json() -> StreamingResponse:
-    """Same data as /citation-graph, served as a downloadable file rather
-    than an inline API response - for anyone who wants the raw decision/
-    BGE-citation data to process in their own code."""
     body = json.dumps(_load_citation_graph(), ensure_ascii=False, indent=2)
     return StreamingResponse(
         iter([body]),
@@ -88,8 +96,6 @@ def export_decisions_json() -> StreamingResponse:
 
 @app.get("/export/decisions.csv", include_in_schema=False)
 def export_decisions_csv() -> StreamingResponse:
-    """One row per EDOEB decision: title, date, law version, source PDF,
-    and the BGE precedents it cites - for spreadsheet/code-side analysis."""
     graph = _load_citation_graph()
     buf = io.StringIO()
     writer = csv.writer(buf)
@@ -114,16 +120,20 @@ def export_decisions_csv() -> StreamingResponse:
 
 class AskRequest(BaseModel):
     question: str
+    domain: Literal["dsg", "dsa"] = "dsg"
     top_k: int = 5
-    lang: str = "de"  # "de" | "en" - which language the LLM must answer in,
-    # set explicitly by the UI's language toggle rather than inferred from
-    # the question text (unreliable: the German-heavy retrieved excerpts
-    # were pulling weaker models into answering in German regardless).
+    lang: str = "de"  # "de" | "en" - explicit from the UI's language toggle,
+    # not inferred from the question (the German-heavy DSG excerpts were
+    # observed pulling weaker models into answering in German regardless).
 
 
-@app.post("/ask", response_model=AnswerWithSources)
-def ask_endpoint(req: AskRequest) -> AnswerWithSources:
+@app.post("/ask", response_model=None)
+def ask_endpoint(req: AskRequest):
+    if req.domain == "dsg":
+        from ..domains.dsg.rag.chat import ask as ask_question
+    else:
+        from ..domains.dsa.rag.chat import ask as ask_question
     try:
         return ask_question(req.question, top_k=req.top_k, lang=req.lang)
     except Exception as e:
-        raise friendly_llm_error(e) from e
+        raise friendly_llm_error(e, lang=req.lang) from e

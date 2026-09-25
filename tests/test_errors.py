@@ -48,3 +48,12 @@ def test_unrecognized_exception_maps_to_generic_500():
 def test_long_message_is_truncated_to_200_chars():
     result = friendly_llm_error(Exception("x" * 500))
     assert len(result.detail) <= len("Unerwarteter Fehler (Exception): ") + 200
+
+
+def test_lang_en_selects_english_messages():
+    # DSA's UI defaults to English (vs. DSG's German) - added when the two
+    # apps merged and this helper started serving both.
+    result = friendly_llm_error(RuntimeError("GLM_API_KEY not set in .env"), lang="en")
+    assert "Configuration error" in result.detail
+    result = friendly_llm_error(Exception("429 rate limited"), lang="en")
+    assert "rate/quota limit" in result.detail

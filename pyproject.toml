@@ -1,7 +1,7 @@
 [project]
 name = "dsg-compliance"
 version = "0.1.0"
-description = "RAG-grounded assistant for Swiss DSG (Datenschutzgesetz) compliance questions, citing the statute, ordinance, and FDPIC (EDOEB) guidance/decisions"
+description = "RAG-grounded assistant for two Swiss-relevant compliance domains, DSG (Datenschutzgesetz - Swiss data protection) and DSA (EU Digital Services Act) - citing statute, ordinance, and official guidance/decisions for each. Formerly two separate deployments (dsg-compliance, dsa-compliance); merged since both are the identical RAG architecture over a different corpus - see src/dsg_compliance/domains/."
 requires-python = ">=3.11,<4.0"
 dependencies = [
     "fastapi>=0.115",
