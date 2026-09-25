@@ -79,8 +79,12 @@
     .layout { grid-template-columns: 1fr; max-width: 820px; margin: 0 auto; }
     .side { position: static; }
   }
-  .top-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; flex-wrap: wrap; margin-bottom: 4px; }
-  .brand { display: flex; align-items: flex-start; gap: 14px; }
+  /* Language switch sits on the same top row as the title, right-aligned,
+     since it's a page-wide setting (like the title, it applies regardless
+     of which domain is selected) - distinct from the domain toggle below,
+     which is a content choice, not a page setting. */
+  .header-row { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 4px; }
+  .brand-title { display: flex; align-items: center; gap: 14px; min-width: 0; }
   .brand-mark {
     flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; background: var(--accent);
     display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm);
@@ -89,14 +93,13 @@
   .brand-mark svg { width: 20px; height: 20px; }
   h1 {
     font-family: var(--font-display); font-weight: 600; font-size: 1.85rem; letter-spacing: -0.01em;
-    margin: 0 0 6px; color: var(--text); text-wrap: balance;
+    margin: 0; color: var(--text); text-wrap: balance;
   }
   .tagline {
     font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: 1rem;
-    color: var(--accent-dark); margin: 0 0 10px;
+    color: var(--accent-dark); margin: 14px 0 10px;
   }
-  .subtitle { color: var(--text2); margin: 0; max-width: 560px; font-size: 1.02rem; }
-  .toggles { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+  .subtitle { color: var(--text2); margin: 0 0 16px; max-width: 560px; font-size: 1.02rem; }
   .lang-toggle, .domain-toggle { display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 3px; box-shadow: var(--shadow-sm); }
   .lang-toggle button, .domain-toggle button { background: transparent; border: none; padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; color: var(--text2); font-family: inherit; }
   .lang-toggle button.active, .domain-toggle button.active { background: var(--accent); color: #fff; }
@@ -158,8 +161,7 @@
   @media (max-width: 560px) {
     .wrap { padding: 28px 18px 40px; }
     h1 { font-size: 1.5rem; }
-    .top-row { flex-direction: column; }
-    .toggles { align-items: flex-start; }
+    .header-row { flex-direction: column; align-items: flex-start; }
   }
 </style>
 </head>
@@ -183,8 +185,8 @@
   </div>
 </aside>
 <div class="wrap">
-  <div class="top-row">
-    <div class="brand">
+  <div class="header-row">
+    <div class="brand-title">
       <div class="brand-mark" id="brandMark">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
@@ -215,23 +217,22 @@
           </g>
         </svg>
       </div>
-      <div>
-        <h1 id="pageTitle"></h1>
-        <p class="tagline" id="tagline"></p>
-        <p class="subtitle" id="subtitle"></p>
-      </div>
+      <h1 id="pageTitle"></h1>
     </div>
-    <div class="toggles">
-      <div class="domain-toggle">
-        <button id="btnDsg" onclick="setDomain('dsg')">DSG</button>
-        <button id="btnDsa" onclick="setDomain('dsa')">DSA</button>
-        <button id="btnBoth" onclick="setDomain('both')">Beide</button>
-      </div>
-      <div class="lang-toggle">
-        <button id="btnDe" onclick="setLang('de')">DE</button>
-        <button id="btnEn" onclick="setLang('en')">EN</button>
-      </div>
+    <!-- Page-wide setting (applies no matter which domain is selected),
+         so it sits on the title's own row, not with the domain toggle
+         below (a content choice, not a page setting). -->
+    <div class="lang-toggle">
+      <button id="btnDe" onclick="setLang('de')">DE</button>
+      <button id="btnEn" onclick="setLang('en')">EN</button>
     </div>
+  </div>
+  <p class="tagline" id="tagline"></p>
+  <p class="subtitle" id="subtitle"></p>
+  <div class="domain-toggle">
+    <button id="btnDsg" onclick="setDomain('dsg')">DSG</button>
+    <button id="btnDsa" onclick="setDomain('dsa')">DSA</button>
+    <button id="btnBoth" onclick="setDomain('both')">Beide</button>
   </div>
 
   <div class="model-badge" id="modelBadge"><span class="dot"></span> ...</div>
