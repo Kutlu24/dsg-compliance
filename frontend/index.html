@@ -37,6 +37,14 @@
     display: grid; grid-template-columns: minmax(0, 260px) minmax(0, 820px) minmax(0, 260px);
     justify-content: center; align-items: start; gap: 28px; padding: 40px 24px 56px;
   }
+  /* DSA has no citation-graph side panels (no EDOEB-style decision archive
+     to build them from) - hiding the two <aside> elements with display:none
+     does NOT collapse their grid tracks, so without this override the
+     3-column template stays in effect and .wrap (now the only surviving
+     grid item) gets auto-placed into the leftover 260px track instead of
+     the 820px one, squeezing the DSA card into a narrow, oddly-tall column. */
+  .layout.no-sidebars { grid-template-columns: minmax(0, 820px); }
+  .hidden { display: none; }
   .wrap { padding: 0; }
   .side {
     position: sticky; top: 40px; background: var(--surface); border: 1px solid var(--border);
@@ -157,7 +165,7 @@
 </head>
 <body>
 <div class="topbar"></div>
-<div class="layout">
+<div class="layout" id="layout">
 <aside class="side" id="sideLeft">
   <h2 id="timelineTitle"></h2>
   <p class="side-sub" id="timelineSub"></p>
@@ -179,9 +187,32 @@
     <div class="brand">
       <div class="brand-mark" id="brandMark">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <path id="euStar" d="M0,-1 0.235,-0.324 0.951,-0.309 0.380,0.124 0.588,0.809 0,0.4 -0.588,0.809 -0.380,0.124 -0.951,-0.309 -0.235,-0.324Z" fill="#FFCC00"/>
+          </defs>
+          <g id="shieldIcon">
           <path d="M11 2 3 6v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V6l-8-4Z" fill="#fff" fill-opacity=".18"/>
           <path d="M11 2 3 6v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V6l-8-4Z" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/>
           <path d="M11 8.4v6.2M7.9 11.5h6.2" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
+          </g>
+          <!-- EU flag's own 12-star ring, shown instead of the shield in DSA
+               mode (see setDomain) - drawn directly on the brand-mark square,
+               which is already the EU blue by then via the domain-dsa CSS
+               class, rather than a separate flag rectangle. -->
+          <g id="euStars" class="hidden">
+            <use href="#euStar" transform="translate(12,4.4) scale(.85)"/>
+            <use href="#euStar" transform="translate(15.8,5.42) scale(.85)"/>
+            <use href="#euStar" transform="translate(18.58,8.2) scale(.85)"/>
+            <use href="#euStar" transform="translate(19.6,12) scale(.85)"/>
+            <use href="#euStar" transform="translate(18.58,15.8) scale(.85)"/>
+            <use href="#euStar" transform="translate(15.8,18.58) scale(.85)"/>
+            <use href="#euStar" transform="translate(12,19.6) scale(.85)"/>
+            <use href="#euStar" transform="translate(8.2,18.58) scale(.85)"/>
+            <use href="#euStar" transform="translate(5.42,15.8) scale(.85)"/>
+            <use href="#euStar" transform="translate(4.4,12) scale(.85)"/>
+            <use href="#euStar" transform="translate(5.42,8.2) scale(.85)"/>
+            <use href="#euStar" transform="translate(8.2,5.42) scale(.85)"/>
+          </g>
         </svg>
       </div>
       <div>
@@ -194,7 +225,7 @@
       <div class="domain-toggle">
         <button id="btnDsg" onclick="setDomain('dsg')">DSG</button>
         <button id="btnDsa" onclick="setDomain('dsa')">DSA</button>
-        <button id="btnBoth" onclick="setDomain('both')">+</button>
+        <button id="btnBoth" onclick="setDomain('both')">Beide</button>
       </div>
       <div class="lang-toggle">
         <button id="btnDe" onclick="setLang('de')">DE</button>
@@ -384,6 +415,7 @@ function setLang(l) {
   lang = l;
   document.getElementById("btnDe").classList.toggle("active", l === "de");
   document.getElementById("btnEn").classList.toggle("active", l === "en");
+  document.getElementById("btnBoth").textContent = l === "de" ? "Beide" : "Both";
   document.documentElement.lang = l;
   const dsgS = STRINGS.dsg[l];
   document.getElementById("timelineTitle").textContent = dsgS.timelineTitle;
@@ -412,6 +444,9 @@ function setDomain(d) {
   const showDsgPanels = d !== "dsa";
   document.getElementById("sideLeft").style.display = showDsgPanels ? "" : "none";
   document.getElementById("sideRight").style.display = showDsgPanels ? "" : "none";
+  document.getElementById("layout").classList.toggle("no-sidebars", !showDsgPanels);
+  document.getElementById("shieldIcon").classList.toggle("hidden", d === "dsa");
+  document.getElementById("euStars").classList.toggle("hidden", d !== "dsa");
   renderHeader();
 }
 
