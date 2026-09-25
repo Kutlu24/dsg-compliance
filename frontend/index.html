@@ -28,13 +28,13 @@
   }
   * { box-sizing: border-box; }
   body {
-    font-family: var(--font-body); font-size: 17px; background: var(--bg); color: var(--text); margin: 0; line-height: 1.55;
+    font-family: var(--font-body); font-size: 18px; background: var(--bg); color: var(--text); margin: 0; line-height: 1.6;
     background-image: radial-gradient(1100px 420px at 50% -180px, rgba(216,35,42,.06), transparent 70%);
     transition: background-color .2s;
   }
   .topbar { height: 5px; background: linear-gradient(90deg, var(--accent), var(--accent-dark)); }
   .layout {
-    display: grid; grid-template-columns: minmax(0, 260px) minmax(0, 820px) minmax(0, 260px);
+    display: grid; grid-template-columns: minmax(0, 280px) minmax(0, 900px) minmax(0, 280px);
     justify-content: center; align-items: start; gap: 28px; padding: 40px 24px 56px;
   }
   /* DSA has no citation-graph side panels (no EDOEB-style decision archive
@@ -43,7 +43,7 @@
      3-column template stays in effect and .wrap (now the only surviving
      grid item) gets auto-placed into the leftover 260px track instead of
      the 820px one, squeezing the DSA card into a narrow, oddly-tall column. */
-  .layout.no-sidebars { grid-template-columns: minmax(0, 820px); }
+  .layout.no-sidebars { grid-template-columns: minmax(0, 900px); }
   .hidden { display: none; }
   .wrap { padding: 0; }
   .side {
@@ -76,8 +76,14 @@
   .prec-row .prec-bar-track { background: var(--bg); border-radius: 4px; height: 7px; overflow: hidden; }
   .prec-row .prec-bar-fill { background: linear-gradient(90deg, var(--accent), var(--accent-dark)); height: 100%; border-radius: 4px; }
   @media (max-width: 1180px) {
-    .layout { grid-template-columns: 1fr; max-width: 820px; margin: 0 auto; }
+    .layout { grid-template-columns: 1fr; max-width: 900px; margin: 0 auto; }
     .side { position: static; }
+    /* Grid auto-placement otherwise keeps DOM order when collapsed to one
+       column: sideLeft (the decision timeline - dozens of rows) would land
+       ABOVE the question card, so a phone visitor has to scroll past all of
+       it before reaching the actual tool. order:-1 (default is 0) always
+       places .wrap first regardless of where it sits in the markup. */
+    .wrap { order: -1; }
   }
   /* Language switch sits on the same top row as the title, right-aligned,
      since it's a page-wide setting (like the title, it applies regardless
@@ -86,22 +92,23 @@
   .header-row { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 4px; }
   .brand-title { display: flex; align-items: center; gap: 14px; min-width: 0; }
   .brand-mark {
-    flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; background: var(--accent);
+    flex-shrink: 0; width: 48px; height: 48px; border-radius: 12px; background: var(--accent);
     display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm);
     transition: background-color .2s;
   }
-  .brand-mark svg { width: 20px; height: 20px; }
+  .brand-mark svg { width: 24px; height: 24px; }
   h1 {
-    font-family: var(--font-display); font-weight: 600; font-size: 1.85rem; letter-spacing: -0.01em;
+    font-family: var(--font-display); font-weight: 600; font-size: 2.05rem; letter-spacing: -0.01em;
     margin: 0; color: var(--text); text-wrap: balance;
   }
   .tagline {
-    font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: 1rem;
+    font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: 1.08rem;
     color: var(--accent-dark); margin: 14px 0 10px;
   }
-  .subtitle { color: var(--text2); margin: 0 0 16px; max-width: 560px; font-size: 1.02rem; }
+  .subtitle { color: var(--text2); margin: 0 0 16px; max-width: 620px; font-size: 1.08rem; }
+  .domain-hint { color: var(--text3); margin: -10px 0 16px; font-size: 0.86rem; }
   .lang-toggle, .domain-toggle { display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 3px; box-shadow: var(--shadow-sm); }
-  .lang-toggle button, .domain-toggle button { background: transparent; border: none; padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; color: var(--text2); font-family: inherit; }
+  .lang-toggle button, .domain-toggle button { background: transparent; border: none; padding: 8px 16px; border-radius: 6px; font-size: 0.86rem; font-weight: 600; cursor: pointer; color: var(--text2); font-family: inherit; }
   .lang-toggle button.active, .domain-toggle button.active { background: var(--accent); color: #fff; }
   .model-badge {
     display: inline-flex; align-items: center; gap: 7px; font-size: 0.76rem; color: var(--text2);
@@ -160,8 +167,12 @@
   .disclaimer { font-size: 0.78rem; color: var(--text3); font-style: italic; margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--border); }
   @media (max-width: 560px) {
     .wrap { padding: 28px 18px 40px; }
-    h1 { font-size: 1.5rem; }
+    h1 { font-size: 1.6rem; }
     .header-row { flex-direction: column; align-items: flex-start; }
+    .card { padding: 16px; }
+    .side { padding: 16px; }
+    .domain-toggle { width: 100%; }
+    .domain-toggle button { flex: 1; padding: 9px 10px; }
   }
 </style>
 </head>
@@ -234,6 +245,7 @@
     <button id="btnDsa" onclick="setDomain('dsa')">DSA</button>
     <button id="btnBoth" onclick="setDomain('both')">Beide</button>
   </div>
+  <p class="domain-hint" id="domainHint"></p>
 
   <div class="model-badge" id="modelBadge"><span class="dot"></span> ...</div>
 
@@ -418,6 +430,9 @@ function setLang(l) {
   document.getElementById("btnDe").classList.toggle("active", l === "de");
   document.getElementById("btnEn").classList.toggle("active", l === "en");
   document.getElementById("btnBoth").textContent = l === "de" ? "Beide" : "Both";
+  document.getElementById("domainHint").textContent = l === "de"
+    ? "DSG = Datenschutzgesetz (Schweiz) · DSA = Digital Services Act (EU)"
+    : "DSG = Swiss Data Protection Act · DSA = EU Digital Services Act";
   document.documentElement.lang = l;
   const dsgS = STRINGS.dsg[l];
   document.getElementById("timelineTitle").textContent = dsgS.timelineTitle;
