@@ -2,7 +2,7 @@
 name = "dsg-compliance"
 version = "0.1.0"
 description = "RAG-grounded assistant for Swiss DSG (Datenschutzgesetz) compliance questions, citing the statute, ordinance, and FDPIC (EDOEB) guidance/decisions"
-requires-python = ">=3.11"
+requires-python = ">=3.11,<4.0"
 dependencies = [
     "fastapi>=0.115",
     "uvicorn[standard]>=0.30",
