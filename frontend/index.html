@@ -365,7 +365,7 @@ const STRINGS = {
 // header shows while the question actually goes to both real domains.
 const BOTH_STRINGS = {
   de: {
-    pageTitle: "Swiss Compliance Assistant",
+    pageTitle: "DSG & DSA Compliance Assistant",
     tagline: "Eine Frage, zwei Wissensbasen.",
     subtitle: "Ihre Frage wird gleichzeitig an DSG und DSA gestellt - jede Antwort erscheint einzeln, mit ihren eigenen Quellenangaben.",
     questionLabel: "Ihre Frage",
@@ -375,7 +375,7 @@ const BOTH_STRINGS = {
     error: "Fehler: ",
   },
   en: {
-    pageTitle: "Swiss Compliance Assistant",
+    pageTitle: "DSG & DSA Compliance Assistant",
     tagline: "One question, two knowledge bases.",
     subtitle: "Your question is sent to DSG and DSA at once - each answer appears separately, with its own citations.",
     questionLabel: "Your question",
@@ -403,6 +403,7 @@ function renderModelBadge() {
 
 function renderHeader() {
   const s = activeStrings();
+  document.title = s.pageTitle;
   document.getElementById("pageTitle").textContent = s.pageTitle;
   document.getElementById("tagline").textContent = s.tagline;
   document.getElementById("subtitle").textContent = s.subtitle;
