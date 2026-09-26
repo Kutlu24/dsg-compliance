@@ -43,7 +43,7 @@
      3-column template stays in effect and .wrap (now the only surviving
      grid item) gets auto-placed into the leftover 260px track instead of
      the 820px one, squeezing the DSA card into a narrow, oddly-tall column. */
-  .layout.no-sidebars { grid-template-columns: minmax(0, 900px); }
+  .layout.no-sidebars { grid-template-columns: minmax(0, 1100px); }
   .hidden { display: none; }
   .wrap { padding: 0; }
   .side {
@@ -107,9 +107,11 @@
   }
   .subtitle { color: var(--text2); margin: 0 0 16px; max-width: 620px; font-size: 1.08rem; }
   .domain-hint {
-    color: var(--text3); margin: 10px 0 16px; font-size: 0.86rem; line-height: 1.4;
+    color: var(--text); margin: 10px 0 16px; font-size: 0.9rem; line-height: 1.4;
     background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px;
   }
+  .domain-hint b.hint-dsg { color: #d8232a; }
+  .domain-hint b.hint-dsa { color: #003399; }
   .lang-toggle, .domain-toggle { display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 3px; box-shadow: var(--shadow-sm); }
   .lang-toggle button, .domain-toggle button { background: transparent; border: none; padding: 8px 16px; border-radius: 6px; font-size: 0.86rem; font-weight: 600; cursor: pointer; color: var(--text2); font-family: inherit; }
   .lang-toggle button.active, .domain-toggle button.active { background: var(--accent); color: #fff; }
@@ -433,9 +435,9 @@ function setLang(l) {
   document.getElementById("btnDe").classList.toggle("active", l === "de");
   document.getElementById("btnEn").classList.toggle("active", l === "en");
   document.getElementById("btnBoth").textContent = l === "de" ? "Beide" : "Both";
-  document.getElementById("domainHint").textContent = l === "de"
-    ? "DSG = Datenschutzgesetz (Schweiz) · DSA = Digital Services Act (EU)"
-    : "DSG = Swiss Data Protection Act · DSA = EU Digital Services Act";
+  document.getElementById("domainHint").innerHTML = l === "de"
+    ? '<b class="hint-dsg">DSG</b> = Datenschutzgesetz (Schweiz) · <b class="hint-dsa">DSA</b> = Digital Services Act (EU)'
+    : '<b class="hint-dsg">DSG</b> = Swiss Data Protection Act · <b class="hint-dsa">DSA</b> = EU Digital Services Act';
   document.documentElement.lang = l;
   const dsgS = STRINGS.dsg[l];
   document.getElementById("timelineTitle").textContent = dsgS.timelineTitle;
