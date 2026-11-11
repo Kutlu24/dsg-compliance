@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import ipaddress
 import json
+import os
 import threading
 import time
 from collections import OrderedDict, deque
@@ -40,6 +41,38 @@ def bucket(addr: str) -> str:
             return str(ip.ipv4_mapped)
         return str(ipaddress.ip_network(f"{ip}/56", strict=False).network_address) + "/56"  # what a home or small site is usually given
     return str(ip)
+
+try:
+    PROXY_HOPS = max(1, int(os.environ.get("PROXY_HOPS", "1")))
+except ValueError:
+    PROXY_HOPS = 1
+
+
+# loopback, the private IPv4 ranges, carrier-grade NAT (Tailscale) and IPv6 unique-local: where a proxy of ours can sit.
+# Spelled out because ipaddress.is_private also covers documentation and other special ranges.
+_PROXY_NETS = [ipaddress.ip_network(n) for n in ("127.0.0.0/8", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16",
+                                                  "100.64.0.0/10", "::1/128", "fc00::/7")]
+
+
+def peer_is_proxy(peer: str) -> bool:
+    """Is the machine that connected to us a reverse proxy of ours (Render's router, Caddy on the same host or Docker
+    network)? Those sit on loopback or a private network. A caller that reaches the app directly from the internet has
+    a public address, and then nothing it writes into X-Forwarded-For is believed."""
+    try:
+        ip = ipaddress.ip_address(peer)
+    except ValueError:
+        return False
+    if ip.version == 6 and ip.ipv4_mapped is not None:
+        ip = ip.ipv4_mapped
+    return any(ip in net for net in _PROXY_NETS)
+
+
+def client_of(peer: str, xff: list[str]) -> str:
+    """The address to count. Behind our own proxy: the X-Forwarded-For entry PROXY_HOPS from the right (each proxy
+    appends the address it saw, so entries further left are whatever the caller typed). Otherwise: the peer itself."""
+    if xff and peer_is_proxy(peer):
+        return bucket(xff[-min(PROXY_HOPS, len(xff))])
+    return bucket(peer or "unknown")
 
 
 class Limiter:
@@ -125,7 +158,7 @@ class Guard:
         charged = None
         rule = rule_for(path, RULES)
         if rule is not None:
-            client = bucket(xff[-1] if xff else ((scope.get("client") or ["unknown"])[0] or "unknown"))
+            client = client_of((scope.get("client") or [""])[0] or "", xff)
             wait = limiter.check(rule, client)
             charged = (rule, client)
             if wait:
