@@ -24,9 +24,10 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from ..config import data_dir, settings
+from .guard import Guard
 from .errors import friendly_llm_error
 
 
@@ -66,6 +67,9 @@ async def _security_headers(request, call_next):
         "Strict-Transport-Security", "max-age=31536000; includeSubDomains"
     )
     return response
+
+
+app.add_middleware(Guard)  # outermost: rate limits and a streamed body cap for /ask (see guard.py)
 
 
 @app.get("/", include_in_schema=False)
@@ -137,7 +141,7 @@ def export_decisions_csv() -> StreamingResponse:
     for d in graph["decisions"]:
         writer.writerow(
             [
-                d["title"],
+                _csv_safe(d["title"]),
                 d.get("publication_date") or "",
                 d["law_version"],
                 d["pdf_url"],
@@ -152,11 +156,17 @@ def export_decisions_csv() -> StreamingResponse:
     )
 
 
+def _csv_safe(value: str) -> str:
+    """Titles come from scraped documents. A cell that starts with = + - @ is run as a formula by spreadsheet programs."""
+    value = str(value)
+    return "'" + value if value[:1] in ("=", "+", "-", "@", "\t", "\r") else value
+
+
 class AskRequest(BaseModel):
-    question: str
+    question: str = Field(min_length=3, max_length=2000)
     domain: Literal["dsg", "dsa"] = "dsg"
-    top_k: int = 5
-    lang: str = "de"  # "de" | "en" - explicit from the UI's language toggle,
+    top_k: int = Field(default=5, ge=1, le=12)  # each extra excerpt is more text sent to the model
+    lang: Literal["de", "en"] = "de"  # "de" | "en" - explicit from the UI's language toggle,
     # not inferred from the question (the German-heavy DSG excerpts were
     # observed pulling weaker models into answering in German regardless).
 
